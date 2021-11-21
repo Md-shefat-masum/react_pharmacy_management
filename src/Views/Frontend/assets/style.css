@@ -1,0 +1,7 @@
+.front_section {
+  background-image: url('../assets/images/front.png');
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
