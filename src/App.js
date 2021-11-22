@@ -19,6 +19,21 @@ import {
     DispensaryProfile,
     DispensaryCreateOrder,
     DispensaryPrescriptions,
+    DispensaryInvetoryCateogryAll,
+    DispensaryInvetoryCateogryCreate,
+    DispensaryInvetoryDrugAll,
+    DispensaryInvetoryDrugCreate,
+    DispensaryInvetoryManufacturerAll,
+    DispensaryInvetoryManufacturerCreate,
+    DispensaryInvetoryStorageAll,
+    DispensaryInvetoryStorageCreate,
+    DispensaryInvetorySupplierAll,
+    DispensaryInvetorySupplierCreate,
+    InventoryLayout,
+    DispensaryInvetoryDrugLayout,
+    DispensaryInvetoryCateogryLayout,
+    DispensaryInvetoryCateogryEdit,
+    DispensaryInvetoryCateogryDetails,
 } from "./Views/Dispensary/Pages/DispensaryPages";
 
 import NotFound from "./Views/Errors/NotFound";
@@ -72,7 +87,32 @@ function App() {
                     {/* Dispensary routes */}
                     <Route path="/dispensary" element={<PrivateRoute><DispensaryLayout /></PrivateRoute>}>
                         <Route index element={<DispensaryDashboard />} />
-                        <Route path="inventory" element={<DispensaryInventory />} />
+
+                        <Route path="inventory" element={<InventoryLayout />} >
+
+                            <Route path="categories" element={<DispensaryInvetoryCateogryLayout/>}>
+                                <Route index element={<DispensaryInvetoryCateogryAll/>}/>
+                                <Route path="create" element={<DispensaryInvetoryCateogryCreate/>}/>
+                                <Route path="edit/:id" element={<DispensaryInvetoryCateogryEdit/>}/>
+                                <Route path="details/:id" element={<DispensaryInvetoryCateogryDetails/>}/>
+                            </Route>
+
+                            <Route path="drugs" element={<DispensaryInvetoryDrugLayout/>}>
+                                <Route index element={<DispensaryInvetoryDrugAll/>}/>
+                                <Route path="create" element={<DispensaryInvetoryDrugCreate/>}/>
+                            </Route>
+
+                            <Route path="manufactures" element={<DispensaryInvetoryManufacturerAll/>}>
+                                <Route path="create" element={<DispensaryInvetoryManufacturerCreate/>}/>
+                            </Route>
+                            <Route path="storages" element={<DispensaryInvetoryStorageAll/>}>
+                                <Route path="create" element={<DispensaryInvetoryStorageCreate/>}/>
+                            </Route>
+                            <Route path="suppliers" element={<DispensaryInvetorySupplierAll/>}>
+                                <Route path="create" element={<DispensaryInvetorySupplierCreate/>}/>
+                            </Route>
+                        </Route>
+
                         <Route path="orders" element={<DispensaryOrders />} />
                         <Route path="create-order" element={<DispensaryCreateOrder />} />
                         <Route path="prescriptions" element={<DispensaryPrescriptions />} />

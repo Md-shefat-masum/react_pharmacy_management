@@ -1,20 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
+import { UseAuth } from '../../../Hooks/UseAuth'
 // import Nav from '../components/Nav'
 
 function Frontend() {
+    const { user_loged_in, navigate_to } = UseAuth();
+    const [load, setLoad] = useState(false)
+
+    useEffect(() => {
+        if (user_loged_in) {
+            navigate_to()
+        }
+        setLoad(true);
+    }, [user_loged_in])
+
     return (
         <div>
-            {/* A "layout route" is a good place to put markup you want to
-          share across all the pages on your site, like navigation. */}
-          
-            {/* <Nav></Nav>
-             */}
-
-            {/* An <Outlet> renders whatever child route is currently active,
-          so you can think about this <Outlet> as a placeholder for
-          the child routes we defined above. */}
-            <Outlet />
+            {
+                load &&
+                <Outlet />
+            }
         </div>
     )
 }

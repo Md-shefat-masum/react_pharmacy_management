@@ -3,15 +3,16 @@ import { Outlet } from 'react-router-dom'
 import Header from './Includes/Header'
 import Sidebar from './Includes/Sidebar'
 import { UseCommonData } from '../../../Hooks/UseCommonData'
+import Alert from '../../Components/Shared/Alert'
 
-export default function Admin() {
-    const {show_nav_bar} = UseCommonData();
+function Admin() {
+    const { show_nav_bar } = UseCommonData();
     return (
         <div className="page-wrapper">
             <Header></Header>
-            <div className={show_nav_bar?`page-body-wrapper`:`page-body-wrapper sidebar-close`}>
+            <div className={show_nav_bar ? `page-body-wrapper` : `page-body-wrapper sidebar-close`}>
                 <Sidebar></Sidebar>
-            
+
                 <div className="page-body">
                     <div className="container-fluid">
                         <div className="page-header">
@@ -41,10 +42,13 @@ export default function Admin() {
                                 <Outlet />
                             </div>
                         </div>
+                        <Alert></Alert>
                     </div>
                 </div>
+
             </div>
-            
+
         </div>
     )
 }
+export default Admin;

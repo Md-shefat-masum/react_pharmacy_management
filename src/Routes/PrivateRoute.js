@@ -9,11 +9,11 @@ function PrivateRoute({ children }) {
     useEffect(() => {
         console.log(location.pathname);
         set_previous_location(location.pathname);
-    }, [location,set_previous_location])
+    }, [])
 
     if ( !( user?.email?.length ) ) {
         return (
-            <Navigate to="/login" state={{ form: location }}></Navigate>
+            <Navigate to="/signin" state={{ form: location }}></Navigate>
         )
     }
 

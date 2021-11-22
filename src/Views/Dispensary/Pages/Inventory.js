@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 function Inventory() {
     const [BillingFormShow, setBillingFormShow] = useState('')
     const [MedicineList, setMedicineList] = useState([])
+    let navigate = useNavigate();
     useEffect(() => {
         let list = [
             {
@@ -74,17 +76,22 @@ function Inventory() {
         ];
         setMedicineList(list);
     }, [])
+    const handleNavigate = (url) => {
+        setBillingFormShow(url) ;
+        navigate('/dispensary/inventory/'+url) ;
+    }
+    
     return (
         <div>
             <div className="card">
                 <div className="card-header">
                     <h4>Inventory</h4>
                     <div className="d-flex flex-wrap">
-                        <button onClick={() => setBillingFormShow('billing')} className={"btn btn-outline-info m-1 " + (BillingFormShow === 'billing' ? 'active' : '')}>All Products</button>
-                        <button onClick={() => setBillingFormShow('billing')} className={"btn btn-outline-info m-1 " + (BillingFormShow === 'billing' ? 'active' : '')}>Create Products</button>
-                        <button onClick={() => setBillingFormShow('shipping')} className={"btn btn-outline-secondary m-1 " + (BillingFormShow === 'shipping' ? 'active' : '')}>Categories</button>
-                        <button onClick={() => setBillingFormShow('payment')} className={"btn btn-outline-success m-1 " + (BillingFormShow === 'payment' ? 'active' : '')}>Out of stock</button>
-                        <button onClick={() => setBillingFormShow('payment')} className={"btn btn-outline-primary m-1 " + (BillingFormShow === 'payment' ? 'active' : '')}>Best selling</button>
+                        <button onClick={() => handleNavigate('drugs')} className={"btn btn-outline-info m-1 " + (BillingFormShow === 'drugs' ? 'active' : '')}>All Drugs</button>
+                        <button onClick={() => handleNavigate('categories') } className={"btn btn-outline-secondary m-1 " + (BillingFormShow === 'categories' ? 'active' : '')}>Categories</button>
+                        <button onClick={() => handleNavigate('storages') } className={"btn btn-outline-secondary m-1 " + (BillingFormShow === 'storages' ? 'active' : '')}>Storages</button>
+                        <button onClick={() => handleNavigate('suppliers') } className={"btn btn-outline-secondary m-1 " + (BillingFormShow === 'suppliers' ? 'active' : '')}>Suppliers</button>
+                        <button onClick={() => handleNavigate('manufactures') } className={"btn btn-outline-secondary m-1 " + (BillingFormShow === 'manufactures' ? 'active' : '')}>Manufactures</button>
                         <div className="d-inline-block">
                             <input type="text" className="form-control m-1" placeholder="search.." />
                         </div>

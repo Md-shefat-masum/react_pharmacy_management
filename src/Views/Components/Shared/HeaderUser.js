@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { UseAuth } from '../../../Hooks/UseAuth'
 
 function HeaderUser() {
-    let { user } = UseAuth();
+    let { user, log_out } = UseAuth();
     return (
         <div>
             <div className="d-flex align-items-center">
@@ -32,7 +32,7 @@ function HeaderUser() {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/signin">
+                    <Link to="#/" onClick={()=>log_out()}>
                         <i className="icon-power-off"></i>
                         Logout
                     </Link>

@@ -2,11 +2,14 @@ import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { UseAuth } from "../../../Hooks/UseAuth";
 // import { UseAuth } from "../../../Hooks/UseAuth";
 
 export default function Signup() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const [Active, setActive] = useState('consumer')
+    const [Active, setActive] = useState('consumer');
+    const [imagePreview, setImagePreview] = useState('');
+    const { set_user, set_user_loged_in, set_checked_auth } = UseAuth();
 
     const password = useRef({});
     const image = useRef({});
@@ -14,8 +17,8 @@ export default function Signup() {
 
     const onSubmit = (data) => {
         let form_data = new FormData()
-        form_data.append('image',image.current.files[0])
-        for ( var key in data ) {
+        form_data.append('image', image.current.files[0])
+        for (var key in data) {
             form_data.append(key, data[key]);
         }
 
@@ -23,13 +26,17 @@ export default function Signup() {
         Active === 'deliveryman' && (role_serial = 6);
         Active === 'pharmacy' && (role_serial = 4);
         Active === 'physician' && (role_serial = 3);
-        form_data.append('role_serial',role_serial);
+        form_data.append('role_serial', role_serial);
 
-        axios.post(`${process.env.REACT_APP_API_LINK}/user/register`,form_data)
-            .then(res=>{
+        axios.post(`${process.env.REACT_APP_API_LINK}/user/register`, form_data)
+            .then(res => {
                 console.log(res.data);
+                set_user(res.data);
+                set_user_loged_in(true);
+                set_checked_auth(true);
+                window.localStorage.setItem('access_token',res.data.access_token);
             })
-        
+
     };
 
     return (
@@ -129,7 +136,8 @@ export default function Signup() {
 
                             <div className="mb-3 col-lg-6">
                                 <label className="col-form-label">Photo <sup className="text-danger"> ( Passport size 200*200 px )</sup></label>
-                                <input ref={image} name="image" type="file" className="form-control" placeholder="image"></input>
+                                <input ref={image} name="image" onChange={() => setImagePreview(URL.createObjectURL(image.current.files[0]))} type="file" className="form-control" placeholder="image"></input>
+                                {imagePreview.length > 0 && <img src={imagePreview} alt="profile" className="img-thumbnail mt-3" style={{ width: 100, }} />}
                             </div>
                             {/* <div className="form-check checkbox">
                                 <input className="form-check-input" id="checkbox1" type="checkbox"></input>
@@ -158,10 +166,10 @@ export default function Signup() {
                 </div>
             </div>
             <div className="auth-bg-effect">
-                <div className="first-effect"></div>
+                {/* <div className="first-effect"></div>
                 <div className="second-effect"></div>
                 <div className="third-effect"></div>
-                <div className="fourth-effect"></div>
+                <div className="fourth-effect"></div> */}
             </div>
 
         </div>

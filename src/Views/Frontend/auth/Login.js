@@ -1,13 +1,39 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { UseAuth } from "../../../Hooks/UseAuth";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 
 export default function Login() {
-    console.log(UseAuth());
-    let { login_with_google } = UseAuth();
-    const handleLogin = () => {
-        login_with_google();
-    }
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { set_user, set_user_loged_in, set_checked_auth } = UseAuth();
+
+    // let { login_with_google } = UseAuth();
+    // const handleLogin = () => {
+    //     login_with_google();
+    // }
+
+    const onSubmit = (data) => {
+        let form_data = new FormData()
+        for ( var key in data ) {
+            form_data.append(key, data[key]);
+        }
+
+        // console.log(data);
+        axios.post(`${process.env.REACT_APP_API_LINK}/user/login`,form_data)
+            .then(res=>{
+                // console.log(res.data);
+                set_user(res.data);
+                set_user_loged_in(true);
+                set_checked_auth(true);
+                window.localStorage.setItem('access_token',res.data.access_token);
+            })
+
+        // axios.get(`${process.env.REACT_APP_API_LINK}/user/users`)
+        //     .then(res=>{
+        //         console.log(res.data);
+        //     })
+    };
     return (
         <div className="page-wrapper">
             <div className="auth-bg">
@@ -18,17 +44,19 @@ export default function Login() {
                     <h4 className="text-center">LOGIN</h4>
                     {/* <h6 className="text-center">Enter your Username and Password For Login</h6> */}
                     <div className="card mt-4 p-4 mb-0">
-                        <form className="theme-form">
+                        <form onSubmit={handleSubmit(onSubmit)} className="theme-form">
                             <div className="mb-3">
-                                <label className="col-form-label pt-0">Your Name</label>
-                                <input type="text" className="form-control" />
+                                <label className="col-form-label pt-0">Username / Email</label>
+                                <input type="text" {...register("email", { required: true })} name="email" className="form-control" />
+                                {errors.email && <span className="text-danger">This field is required</span>}
                             </div>
                             <div className="mb-3">
                                 <label className="col-form-label">Password</label>
-                                <input type="password" className="form-control" placeholder="Password"></input>
+                                <input type="text" {...register("password", { required: true })} name="password" className="form-control" />
+                                {errors.password && <span className="text-danger">This field is required</span>}
                             </div>
                             <div className="form-check checkbox">
-                                <input className="form-check-input" id="checkbox1" type="checkbox"></input>
+                                <input className="form-check-input" {...register("remember")} id="checkbox1" type="checkbox"></input>
                                 <label className="form-check-label" htmlFor="checkbox1">Remember me</label>
                             </div>
                             <div className="row g-2">
@@ -41,13 +69,12 @@ export default function Login() {
                                         <Link to="/signup" className="btn-link text-capitalize">Signup</Link>
                                     </div>
                                 </div>
-
                             </div>
                             <div className="row mt-3 text-center">
-                                <div className="col-12">
+                                {/* <div className="col-12">
                                     <button type="button" className="btn btn-warning" onClick={() => handleLogin()}>login with google</button>
-                                </div>
-                                <div className="col-md-4 my-2">
+                                </div> */}
+                                {/* <div className="col-md-4 my-2">
                                     <Link to="/consumer" className="btn btn-info">Consumer</Link>
                                 </div>
                                 <div className="col-md-4 my-2">
@@ -55,17 +82,17 @@ export default function Login() {
                                 </div>
                                 <div className="col-md-4 my-2">
                                     <Link to="/physician" className="btn btn-info">Physician</Link>
-                                </div>
+                                </div> */}
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
             <div className="auth-bg-effect">
-                <div className="first-effect"></div>
+                {/* <div className="first-effect"></div>
                 <div className="second-effect"></div>
                 <div className="third-effect"></div>
-                <div className="fourth-effect"></div>
+                <div className="fourth-effect"></div> */}
             </div>
 
         </div>
