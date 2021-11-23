@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { UseAuth } from "../../../Hooks/UseAuth";
 import { useForm } from "react-hook-form";
@@ -6,34 +6,32 @@ import axios from "axios";
 
 export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { set_user, set_user_loged_in, set_checked_auth, navigate_to } = UseAuth();
+    const { set_user, user, set_user_loged_in, set_checked_auth, navigate_to } = UseAuth();
 
     // let { login_with_google } = UseAuth();
     // const handleLogin = () => {
     //     login_with_google();
     // }
 
-    const onSubmit = (data) => {
+    useEffect(() => {
+        set_user_loged_in(true);
+        set_checked_auth(true);
+        navigate_to();
+    }, [user])
+
+    const onSubmit = async (data) => {
         let form_data = new FormData()
-        for ( var key in data ) {
+        for (var key in data) {
             form_data.append(key, data[key]);
         }
 
         // console.log(data);
-        axios.post(`${process.env.REACT_APP_API_LINK}/user/login`,form_data)
-            .then(res=>{
-                console.log(res.data);
-                set_user(res.data.user);
-                set_user_loged_in(true);
-                set_checked_auth(true);
-                window.localStorage.setItem('access_token',res.data.access_token);
-                navigate_to();
-            })
-
-        // axios.get(`${process.env.REACT_APP_API_LINK}/user/users`)
-        //     .then(res=>{
-        //         console.log(res.data);
-        //     })
+        let login_res = await axios.post(`${process.env.REACT_APP_API_LINK}/user/login`, form_data, {})
+        if (login_res.data.user) {
+            // console.log(login_res.data.access_token);
+            set_user(login_res.data.user);
+            window.localStorage.setItem('access_token', login_res.data.access_token);
+        }
     };
     return (
         <div className="page-wrapper">
@@ -75,15 +73,15 @@ export default function Login() {
                                 {/* <div className="col-12">
                                     <button type="button" className="btn btn-warning" onClick={() => handleLogin()}>login with google</button>
                                 </div> */}
-                                {/* <div className="col-md-4 my-2">
-                                    <Link to="/consumer" className="btn btn-info">Consumer</Link>
+                                <div className="col-md-4 my-2">
+                                    <Link to="#/" onClick={()=>onSubmit({email:'consumer@gmail.com',password:'12345678'})} className="btn btn-info">Consumer</Link>
                                 </div>
                                 <div className="col-md-4 my-2">
-                                    <Link to="/dispensary" className="btn btn-info">Dispensary</Link>
+                                    <Link to="#/" onClick={()=>onSubmit({email:'pharmacy@gmail.com',password:'12345678'})} className="btn btn-info">Dispensary</Link>
                                 </div>
                                 <div className="col-md-4 my-2">
-                                    <Link to="/physician" className="btn btn-info">Physician</Link>
-                                </div> */}
+                                    <Link to="#/" onClick={()=>onSubmit({email:'doctor@gmail.com',password:'12345678'})} className="btn btn-info">Physician</Link>
+                                </div>
                             </div>
                         </form>
                     </div>

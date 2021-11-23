@@ -4,13 +4,10 @@ import { UseAuth } from '../../../Hooks/UseAuth'
 // import Nav from '../components/Nav'
 
 function Frontend() {
-    const { user_loged_in, navigate_to } = UseAuth();
+    const { user_loged_in } = UseAuth();
     const [load, setLoad] = useState(false)
 
     useEffect(() => {
-        if (user_loged_in) {
-            navigate_to()
-        }
         setLoad(true);
     }, [user_loged_in])
 

@@ -81,7 +81,7 @@ function AllDrugs() {
                                 <td className="font-info">{item.manufaturer}</td>
                                 <td className="font-info">{item.manufacture_date}</td>
                                 <td className="font-info">{item.expiry_date}</td>
-                                <td className="font-info">{item?.status == 1 ? <span className="badge bg-success">Active</span> : <span className="badge bg-warning">Deactive</span>}</td>
+                                <td className="font-info">{item?.status === 1 ? <span className="badge bg-success">Active</span> : <span className="badge bg-warning">Deactive</span>}</td>
                                 <td style={{ width: 370 }}>
                                     <div className="d-flex flex-wrap">
                                         <Link to={"/dispensary/inventory/suppliers/details/"+item.id} className="btn m-2 btn-air-secondary">Details</Link>

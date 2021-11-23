@@ -59,12 +59,12 @@ function HealthSearching() {
         setActiveMarker(marker);
     };
 
-    const handleOnLoad = (map) => {
-        // const bounds = new google.maps.LatLngBounds();
-        // markers.forEach(({ position }) => bounds.extend(position));
-        // map.fitBounds(bounds);
-        console.log(map);
-    };
+    // const handleOnLoad = (map) => {
+    //     // const bounds = new google.maps.LatLngBounds();
+    //     // markers.forEach(({ position }) => bounds.extend(position));
+    //     // map.fitBounds(bounds);
+    //     console.log(map);
+    // };
     return (
         <div className="row">
             <div className="col-12">

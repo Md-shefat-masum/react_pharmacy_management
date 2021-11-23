@@ -1,12 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { UseAuth } from '../../../../../Hooks/UseAuth';
-import { UseCommonData } from '../../../../../Hooks/UseCommonData'
+// import { UseCommonData } from '../../../../../Hooks/UseCommonData'
 
 function DetailsCategory() {
-    const { calert } = UseCommonData();
-    const { formErrors } = UseAuth();
+    // const { calert } = UseCommonData();
     const params = useParams();
     const [drugCategory, setDrugCategory] = useState({})
 

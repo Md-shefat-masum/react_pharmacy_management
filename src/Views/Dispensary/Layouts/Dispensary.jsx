@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from './Includes/Header'
 import Sidebar from './Includes/Sidebar'
 import { UseCommonData } from '../../../Hooks/UseCommonData'
 import Alert from '../../Components/Shared/Alert'
+import { UseAuth } from '../../../Hooks/UseAuth'
 
 function Admin() {
     const { show_nav_bar } = UseCommonData();
-    return (
+    const { user, navigate_to } = UseAuth();
+    
+    useEffect(() => {
+        parseInt(user.role_serial) !== 4 && navigate_to()
+    }, [])
+
+    return parseInt(user.role_serial) === 4 && (
         <div className="page-wrapper">
             <Header></Header>
             <div className={show_nav_bar ? `page-body-wrapper` : `page-body-wrapper sidebar-close`}>
@@ -47,7 +54,6 @@ function Admin() {
                 </div>
 
             </div>
-
         </div>
     )
 }

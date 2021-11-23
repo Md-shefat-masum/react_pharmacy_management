@@ -14,7 +14,7 @@ import {
 import {
     DispensaryLayout,
     DispensaryDashboard,
-    DispensaryInventory,
+    // DispensaryInventory,
     DispensaryOrders,
     DispensaryProfile,
     DispensaryCreateOrder,

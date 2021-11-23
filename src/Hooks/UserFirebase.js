@@ -3,8 +3,8 @@ import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged,
+    // signOut,
+    // onAuthStateChanged,
     GoogleAuthProvider,
     signInWithPopup,
 } from "firebase/auth";
@@ -91,7 +91,7 @@ const UseFirebase = () => {
 
     // set axios
     useEffect(() => {
-        
+
         let access_token = window.localStorage.getItem('access_token');
         if (access_token?.length) {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
@@ -111,7 +111,7 @@ const UseFirebase = () => {
                 throw error;
             }
         );
-    }, [])
+    }, [User])
 
     // check user state
     useEffect(() => {
@@ -120,12 +120,8 @@ const UseFirebase = () => {
             axios.get(`${process.env.REACT_APP_API_LINK}/user/check-auth`)
                 .then(res => {
                     // console.log(res.data);
+                    console.log('check auth');
                     setUser(res.data);
-                    setCheckedAuth(true);
-                    setUserLogedIn(true);
-                    navigate(PreviousLocation, {
-                        replace: true
-                    });
                 })
         } else {
             setCheckedAuth(true);
@@ -146,7 +142,15 @@ const UseFirebase = () => {
         // });
         // return () => unsubscribe;
         // axios.get(`${process.env.}`)
-    }, [setUser])
+    }, [])
+
+    useEffect(() => {
+        if (Object.keys(User).length > 0) {
+            setCheckedAuth(true);
+            setUserLogedIn(true);
+            // PreviousLocation?navigate(PreviousLocation, {replace: true}):navigate_to();
+        }
+    }, [User])
 
     const logOut = () => {
         // signOut(auth).then(() => {
@@ -166,23 +170,25 @@ const UseFirebase = () => {
     }
 
     const navigate_to = () => {
-        console.log(User);
-        if (parseInt(User.role_serial) === parseInt(5)) {
+        console.log({
+            role_serial: User?.role_serial
+        });
+        if (parseInt(User.role_serial) === 5) {
             console.log('consumer');
             navigate('/consumer');
         }
-        if (parseInt(User.role_serial) === parseInt(4)) {
+        if (parseInt(User.role_serial) === 4) {
             console.log('pharmacy');
             navigate('/dispensary');
         }
-        if (parseInt(User.role_serial) === parseInt(3)) {
+        if (parseInt(User.role_serial) === 3) {
             console.log('doctor');
             navigate('/physician');
         }
-        if (parseInt(User.role_serial) === parseInt(2)) {
+        if (parseInt(User.role_serial) === 2) {
             console.log('admin');
         }
-        if (parseInt(User.role_serial) === parseInt(1)) {
+        if (parseInt(User.role_serial) === 1) {
             console.log('admin');
         }
     }
@@ -198,6 +204,7 @@ const UseFirebase = () => {
 
         login_with_google,
         set_previous_location: setPreviousLocation,
+        PreviousLocation,
 
         checked_auth: CheckedAuth,
         set_checked_auth: setCheckedAuth,

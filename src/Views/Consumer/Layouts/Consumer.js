@@ -1,13 +1,19 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Outlet } from 'react-router-dom'
+import { UseAuth } from '../../../Hooks/UseAuth'
 import { UseCommonData } from '../../../Hooks/UseCommonData'
 import Header from './Includes/Header'
 import Sidebar from './Includes/Sidebar'
 
 export default function Admin() {
-    const {show_nav_bar} = UseCommonData();
-    // console.log(show_nav_bar);
-    return (
+    const { show_nav_bar } = UseCommonData();
+    const { user, navigate_to } = UseAuth();
+    
+    useEffect(() => {
+        parseInt(user.role_serial) !== 5 && navigate_to()
+    }, [])
+
+    return parseInt(user.role_serial) === 5 && (
         <div className="page-wrapper">
             <Header></Header>
             <div className={show_nav_bar?`page-body-wrapper`:`page-body-wrapper sidebar-close`}>
