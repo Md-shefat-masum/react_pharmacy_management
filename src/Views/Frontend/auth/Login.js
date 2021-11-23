@@ -6,7 +6,7 @@ import axios from "axios";
 
 export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { set_user, set_user_loged_in, set_checked_auth } = UseAuth();
+    const { set_user, set_user_loged_in, set_checked_auth, navigate_to } = UseAuth();
 
     // let { login_with_google } = UseAuth();
     // const handleLogin = () => {
@@ -22,11 +22,12 @@ export default function Login() {
         // console.log(data);
         axios.post(`${process.env.REACT_APP_API_LINK}/user/login`,form_data)
             .then(res=>{
-                // console.log(res.data);
-                set_user(res.data);
+                console.log(res.data);
+                set_user(res.data.user);
                 set_user_loged_in(true);
                 set_checked_auth(true);
                 window.localStorage.setItem('access_token',res.data.access_token);
+                navigate_to();
             })
 
         // axios.get(`${process.env.REACT_APP_API_LINK}/user/users`)

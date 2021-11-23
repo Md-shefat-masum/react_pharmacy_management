@@ -146,7 +146,7 @@ const UseFirebase = () => {
         // });
         // return () => unsubscribe;
         // axios.get(`${process.env.}`)
-    }, [UserLogedIn])
+    }, [setUser])
 
     const logOut = () => {
         // signOut(auth).then(() => {
@@ -166,7 +166,7 @@ const UseFirebase = () => {
     }
 
     const navigate_to = () => {
-        // console.log(User);
+        console.log(User);
         if (parseInt(User.role_serial) === parseInt(5)) {
             console.log('consumer');
             navigate('/consumer');
