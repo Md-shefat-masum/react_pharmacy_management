@@ -4,7 +4,7 @@ import React from 'react'
 import { UseAuth } from '../../../../../Hooks/UseAuth';
 import { UseCommonData } from '../../../../../Hooks/UseCommonData'
 
-function CreateSupplier() {
+function CreateDrugs() {
     const { calert } = UseCommonData();
     const { formErrors } = UseAuth();
 
@@ -109,4 +109,4 @@ function CreateSupplier() {
     )
 }
 
-export default CreateSupplier
+export default CreateDrugs

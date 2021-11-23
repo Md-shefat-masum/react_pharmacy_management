@@ -53,7 +53,7 @@ function AllCategory() {
                                 <td className="digits">{item.name}</td>
                                 <td className="font-secondary">{item.description}</td>
                                 <td className="font-info">{item.total_medicine}</td>
-                                <td className="font-info">{item?.status == 1 ? <span className="badge bg-success">Active</span> : <span className="badge bg-warning">Deactive</span>}</td>
+                                <td className="font-info">{item?.status === 1 ? <span className="badge bg-success">Active</span> : <span className="badge bg-warning">Deactive</span>}</td>
                                 <td style={{ width: 350 }}>
                                     <div className="d-flex flex-wrap">
                                         <Link to={"/dispensary/inventory/categories/details/"+item.id} className="btn m-2 btn-air-secondary">Details</Link>

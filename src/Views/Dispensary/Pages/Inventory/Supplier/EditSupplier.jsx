@@ -1,20 +1,33 @@
 import axios from 'axios';
-import React from 'react'
-// import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
 import { UseAuth } from '../../../../../Hooks/UseAuth';
 import { UseCommonData } from '../../../../../Hooks/UseCommonData'
 
-function CreateSupplier() {
+function EditSupplier() {
     const { calert } = UseCommonData();
     const { formErrors } = UseAuth();
+    const params = useParams();
+    const [drugCategory, setDrugCategory] = useState({})
 
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API_LINK}/inventory/supplier/get/${params.id}`)
+            .then(res => {
+                setDrugCategory(res.data);
+            })
+        return () => {
+            setDrugCategory({})
+        }
+    }, [])
     const formHandler = (e) => {
         e.preventDefault();
         let form_data = new FormData(e.target);
-        axios.post(`${process.env.REACT_APP_API_LINK}/inventory/supplier/create`, form_data)
+        form_data.append('id', drugCategory.id);
+
+        axios.post(`${process.env.REACT_APP_API_LINK}/inventory/supplier/update`, form_data)
             .then(() => {
-                e.target.reset();
-                calert(true, 'Supplier created successfully.', 'light', 4000);
+                // e.target.reset();
+                calert(true, 'Manufaturer updated successfully.', 'light', 4000);
             })
             .catch((error) => {
                 let message = error?.response?.data?.err_message;
@@ -28,16 +41,17 @@ function CreateSupplier() {
                 <div className="col-md-9">
                     <div className="card shadow-0 border-1 border">
                         <div className="card-header">
-                            <h4> Create Supplier</h4>
+                            <h4> Update Supplier</h4>
                         </div>
                         <div className="card-body">
 
                             <form action="" onSubmit={(e) => formHandler(e)}>
                                 <div className="form-group">
+                                    
                                     <div className="mb-3 row">
                                         <label htmlFor="" className="col-sm-3 col-form-label">Supplier Name :</label>
                                         <div className="col-sm-9">
-                                            <input type="text" name="supplier_name" className="form-control" placeholder="Supplier name" />
+                                            <input type="text" defaultValue={drugCategory.supplier_name} name="supplier_name" className="form-control" placeholder="Supplier name" />
                                             {
                                                 formErrors?.supplier_name?.length > 0 &&
                                                 <span className="text-danger mt-1">{formErrors.supplier_name}</span>
@@ -47,7 +61,7 @@ function CreateSupplier() {
                                     <div className="mb-3 row">
                                         <label htmlFor="" className="col-sm-3 col-form-label">Company Name :</label>
                                         <div className="col-sm-9">
-                                            <input type="text" name="company_name" className="form-control" placeholder="Company name" />
+                                            <input type="text" defaultValue={drugCategory.company_name} name="company_name" className="form-control" placeholder="Company name" />
                                             {
                                                 formErrors?.company_name?.length > 0 &&
                                                 <span className="text-danger mt-1">{formErrors.company_name}</span>
@@ -57,7 +71,7 @@ function CreateSupplier() {
                                     <div className="mb-3 row">
                                         <label htmlFor="" className="col-sm-3 col-form-label">Contact Number :</label>
                                         <div className="col-sm-9">
-                                            <input type="text" name="contact_number" className="form-control" placeholder="Contact Number" />
+                                            <input type="text" defaultValue={drugCategory.contact_number} name="contact_number" className="form-control" placeholder="Contact Number" />
                                             {
                                                 formErrors?.contact_number?.length > 0 &&
                                                 <span className="text-danger mt-1">{formErrors.contact_number}</span>
@@ -67,7 +81,7 @@ function CreateSupplier() {
                                     <div className="mb-3 row">
                                         <label htmlFor="" className="col-sm-3 col-form-label">Email :</label>
                                         <div className="col-sm-9">
-                                            <input type="text" name="email" className="form-control" placeholder="Email" />
+                                            <input type="text" defaultValue={drugCategory.email} name="email" className="form-control" placeholder="Email" />
                                             {
                                                 formErrors?.email?.length > 0 &&
                                                 <span className="text-danger mt-1">{formErrors.email}</span>
@@ -77,7 +91,7 @@ function CreateSupplier() {
                                     <div className="mb-3 row">
                                         <label htmlFor="" className="col-sm-3 col-form-label">Address :</label>
                                         <div className="col-sm-9">
-                                            <input type="text" name="address" className="form-control" placeholder="Address" />
+                                            <input type="text" defaultValue={drugCategory.address} name="address" className="form-control" placeholder="Address" />
                                             {
                                                 formErrors?.address?.length > 0 &&
                                                 <span className="text-danger mt-1">{formErrors.address}</span>
@@ -87,7 +101,7 @@ function CreateSupplier() {
                                     <div className="mb-3 row">
                                         <label htmlFor="" className="col-sm-3 col-form-label">City :</label>
                                         <div className="col-sm-9">
-                                            <input type="text" name="city" className="form-control" placeholder="City" />
+                                            <input type="text" defaultValue={drugCategory.city} name="city" className="form-control" placeholder="City" />
                                             {
                                                 formErrors?.city?.length > 0 &&
                                                 <span className="text-danger mt-1">{formErrors.city}</span>
@@ -109,4 +123,4 @@ function CreateSupplier() {
     )
 }
 
-export default CreateSupplier
+export default EditSupplier

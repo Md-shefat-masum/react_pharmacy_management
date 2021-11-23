@@ -1,105 +1,92 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { Pagination } from 'react-laravel-paginex'
+import { Link } from 'react-router-dom';
+import { UseCommonData } from '../../../../../Hooks/UseCommonData';
 
 function AllDrugs() {
-    const [MedicineList, setMedicineList] = useState([])
+    const [MedicineList, setMedicineList] = useState({})
+    const { calert } = UseCommonData();
+
     useEffect(() => {
-        let list = [
-            {
-                id: 1,
-                name: "Ace",
-                image: 'http://www.squarepharma.com.bd/products/Ace%20125%20Supp-01.jpg',
-                price: parseInt(Math.random() * 100),
-            },
-            {
-                id: 2,
-                name: "Ace® Plus",
-                image: 'http://www.squarepharma.com.bd/products/Ace-Plus_l.jpg',
-                price: parseInt(Math.random() * 100),
-            },
-            {
-                id: 3,
-                name: "Ace® Power",
-                image: 'http://www.squarepharma.com.bd/products/Ace%20power%20DS1-01.jpg',
-                price: parseInt(Math.random() * 100),
-            },
-            {
-                id: 4,
-                name: "Acetram",
-                image: 'http://www.squarepharma.com.bd/products/ACETRAM.jpg',
-                price: parseInt(Math.random() * 100),
-            },
-            {
-                id: 5,
-                name: "Adryl",
-                image: 'http://www.squarepharma.com.bd/products/ADRYL-100ml.jpg',
-                price: parseInt(Math.random() * 100),
-            },
-            {
-                id: 6,
-                name: "Afun",
-                image: 'http://www.squarepharma.com.bd/products/AFUN-Cream.jpg',
-                price: parseInt(Math.random() * 100),
-            },
-            {
-                id: 7,
-                name: "AkicinTM",
-                image: 'http://www.squarepharma.com.bd/products/Akicin%20IC.jpg',
-                price: parseInt(Math.random() * 100),
-            },
-            {
-                id: 8,
-                name: "Alacot® DS Eye Drops",
-                image: 'http://www.squarepharma.com.bd/products/Alacot-DS1.jpg',
-                price: parseInt(Math.random() * 100),
-            },
-            {
-                id: 9,
-                name: "Alacot® Eye Drops",
-                image: 'http://www.squarepharma.com.bd/products/Alacot_o1.jpg',
-                price: parseInt(Math.random() * 100),
-            },
-            {
-                id: 10,
-                name: "Alacot® Max Eye Drops",
-                image: 'http://www.squarepharma.com.bd/products/Product-image_l.jpg',
-                price: parseInt(Math.random() * 100),
-            },
-            {
-                id: 11,
-                name: "Alarid® Eye Drops",
-                image: 'http://www.squarepharma.com.bd/products/ALADRID-0-025.jpg',
-                price: parseInt(Math.random() * 100),
-            },
-        ];
-        setMedicineList(list);
+        LoadData({ page: 1 });
+        return () => {
+            setMedicineList([]);
+        };
     }, [])
+
+    const LoadData = (data) => {
+        axios.get(`${process.env.REACT_APP_API_LINK}/inventory/drug/all?page=${data.page}`)
+            .then(res => {
+                setMedicineList(res.data);
+            })
+    }
+
+    const delete_data = (id) => {
+        window.confirm('sure want to delete?') &&
+        axios.post(`${process.env.REACT_APP_API_LINK}/inventory/drug/delete`,{id})
+            .then(() => {
+                LoadData({ page: 1 });
+                calert(true,'data successfully deleted','light',400);
+            })
+    }
+    
+
     return (
-        <div>
-            <table className="table table-hover">
+        <div className="table-responsive">
+            <table className="table table-hover table-bordered" style={{width: 1600}}>
+                <colgroup>
+                    {/* <col style={{width:120}}/>
+                    <col style={{width:120}}/>
+                    <col style={{width:120}}/>
+                    <col style={{width:120}} />
+                    <col style={{width:180}}/>
+                    <col style={{width:200}}/>
+                    <col style={{width:140}}/>
+                    <col style={{width:230}}/>
+                    <col style={{width:140}}/>
+                    <col style={{width:250}}/>
+                    <col style={{width:100}}/>
+                    <col style={{width:400}}/> */}
+                </colgroup>
                 <thead>
                     <tr>
-                        <th scope="col">Product Id</th>
+                        <th scope="col">Id</th>
+                        <th scope="col">Photo</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Qty</th>
-                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total Sale</th>
+                        <th scope="col">Total Income</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Storage Location</th>
+                        <th scope="col">Manufacturer</th>
+                        <th scope="col">Manufacturing Date</th>
+                        <th scope="col">Expire Date</th>
                         <th scope="col">Status</th>
                         <th scope="col" className="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        MedicineList.map(item => {
-                            return <tr key={item.name}>
-                                <td> #GG-{parseInt(Math.random() * 10000)} </td>
-                                <td className="digits">{item.name}</td>
-                                <td className="font-secondary">{parseInt(Math.random() * 100)}</td>
-                                <td className="font-info">$ {item.price}</td>
-                                <td className="font-info">active</td>
-                                <td style={{ width: 350 }}>
+                        MedicineList?.data?.map(item => {
+                            return <tr key={item.id}>
+                                <td> #{item.id} </td>
+                                <td className="digits">{item.photo}</td>
+                                <td className="font-secondary">{item.name}</td>
+                                <td className="font-dark">{item.quantity}</td>
+                                <td className="font-dark">{item.total_sale}</td>
+                                <td className="font-info">{item.total_income}</td>
+                                <td className="font-info">{item.category}</td>
+                                <td className="font-info">{item.storage_location}</td>
+                                <td className="font-info">{item.manufaturer}</td>
+                                <td className="font-info">{item.manufacture_date}</td>
+                                <td className="font-info">{item.expiry_date}</td>
+                                <td className="font-info">{item?.status == 1 ? <span className="badge bg-success">Active</span> : <span className="badge bg-warning">Deactive</span>}</td>
+                                <td style={{ width: 370 }}>
                                     <div className="d-flex flex-wrap">
-                                        <a href="#/" className="btn m-2 btn-air-secondary">Details</a>
-                                        <a href="#/" className="btn m-2 btn-air-success">Edit</a>
-                                        <a href="#/" className="btn m-2 btn-air-danger">Delete</a>
+                                        <Link to={"/dispensary/inventory/suppliers/details/"+item.id} className="btn m-2 btn-air-secondary">Details</Link>
+                                        <Link to={"/dispensary/inventory/suppliers/edit/"+item.id} className="btn m-2 btn-air-success">Edit</Link>
+                                        <Link to="#/" onClick={()=>delete_data(item.id)} className="btn m-2 btn-air-danger">Delete</Link>
                                     </div>
                                 </td>
                             </tr>
@@ -108,6 +95,10 @@ function AllDrugs() {
 
                 </tbody>
             </table>
+            {
+                MedicineList?.data?.length > 0 &&
+                <Pagination changePage={LoadData} numbersCountForShow={6} data={MedicineList} />
+            }
         </div>
     )
 }

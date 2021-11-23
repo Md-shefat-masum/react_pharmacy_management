@@ -4,14 +4,14 @@ import { useParams } from 'react-router-dom';
 import { UseAuth } from '../../../../../Hooks/UseAuth';
 import { UseCommonData } from '../../../../../Hooks/UseCommonData'
 
-function DetailsCategory() {
+function DetailsManufacturer() {
     const { calert } = UseCommonData();
     const { formErrors } = UseAuth();
     const params = useParams();
     const [drugCategory, setDrugCategory] = useState({})
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_LINK}/inventory/category/get/${params.id}`)
+        axios.get(`${process.env.REACT_APP_API_LINK}/inventory/storage/get/${params.id}`)
             .then(res => {
                 setDrugCategory(res.data);
             })
@@ -20,14 +20,13 @@ function DetailsCategory() {
         }
     }, [])
 
-
     return (
         <div>
             <div className="row justify-content-center mt-4">
                 <div className="col-md-9">
                     <div className="card shadow-0 border-1 border">
                         <div className="card-header">
-                            <h4>Category details</h4>
+                            <h4>Storage details</h4>
                         </div>
                         <div className="card-body">
                             <table className="table">
@@ -61,7 +60,9 @@ function DetailsCategory() {
                                         <th style={{ width: '30%' }}>Status</th>
                                         <th style={{ width: 3 }}>:</th>
                                         <td>
-                                            {drugCategory?.status === 1 ? <span className="badge bg-success">Active</span> : <span className="badge bg-warning">Deactive</span>}
+                                            {
+                                                drugCategory?.status === 1 ? <span className="badge bg-success">Active</span> : <span className="badge bg-warning">Deactive</span>
+                                            }
                                         </td>
                                     </tr>
                                 </tbody>
@@ -75,4 +76,4 @@ function DetailsCategory() {
     )
 }
 
-export default DetailsCategory
+export default DetailsManufacturer
