@@ -5,6 +5,7 @@ import Sidebar from './Includes/Sidebar'
 import { UseCommonData } from '../../../Hooks/UseCommonData'
 import Alert from '../../Components/Shared/Alert'
 import { UseAuth } from '../../../Hooks/UseAuth'
+import Modal from '../../Components/Shared/Modal'
 
 function Admin() {
     const { show_nav_bar } = UseCommonData();
@@ -54,6 +55,7 @@ function Admin() {
                 </div>
 
             </div>
+            <Modal></Modal>
         </div>
     )
 }

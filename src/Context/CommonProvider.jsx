@@ -6,7 +6,13 @@ function CommonProvider({ children }) {
     const [ShowNavbar, setShowNavbar] = useState(true);
     const [ShowHeaderNavbar, setShowHeaderNavbar] = useState(true);
     const [DashCalenderDate, setDashCalenderDate] = useState('');
-    const [showAlert, setShowAlert] = useState({ show: false, text: '', style: '' })
+    const [showAlert, setShowAlert] = useState({ show: false, text: '', style: '',size: 'sm', });
+
+    const [triggerModal, setTriggerModal] = useState({
+        trigger: false,
+        header_text: '',
+    });
+    const [modalContent, setModalContent] = useState(<></>);
 
     useEffect(() => {
         let window_width = window.innerWidth;
@@ -15,8 +21,8 @@ function CommonProvider({ children }) {
         }
     }, [])
 
-    const calert = (show = false, text = '', style = '', time=3000) => {
-        let temp_alert = {...showAlert};
+    const calert = (show = false, text = '', style = '', time = 3000) => {
+        let temp_alert = { ...showAlert };
         temp_alert.show = show;
         temp_alert.text = text;
         temp_alert.style = style;
@@ -25,6 +31,14 @@ function CommonProvider({ children }) {
         setTimeout(() => {
             setShowAlert({ show: false, text: '', style: '' });
         }, time);
+    }
+
+    const control_modal = (control_value) => {
+        // control_value = {
+        //     trigger: false,
+        //     header_text: '',
+        // };
+        setTriggerModal(control_value)
     }
 
 
@@ -43,6 +57,12 @@ function CommonProvider({ children }) {
 
         calert,
         showAlert,
+
+        triggerModal,
+        control_modal,
+        setTriggerModal,
+        modalContent, 
+        setModalContent,
     };
     return (
         <CommonContext.Provider value={allContexts}>
