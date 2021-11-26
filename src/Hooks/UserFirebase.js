@@ -104,10 +104,14 @@ const UseFirebase = () => {
             },
             (error) => {
                 // whatever you want to do with the error
-                // console.log(error.response.data.errors);
+                // console.log(error.response);
                 let object = error?.response?.data?.data;
-                setFormErrors(object);
-                console.log(object);
+                if(object && Object.keys(object)?.length > 0){
+                    setFormErrors(object);
+                }else{
+                    console.log(error.response?.data?.message);
+                }
+                
                 throw error;
             }
         );
@@ -122,6 +126,12 @@ const UseFirebase = () => {
                     // console.log(res.data);
                     console.log('check auth');
                     setUser(res.data);
+                })
+                .catch(err=>{
+                    if(err.response?.data?.message == 'Unauthenticated.'){
+                        localStorage.removeItem('access_token');
+                        navigate('/')
+                    }
                 })
         } else {
             setCheckedAuth(true);

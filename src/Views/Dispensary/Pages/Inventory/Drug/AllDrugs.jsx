@@ -76,16 +76,31 @@ function AllDrugs() {
                                 <td className="font-dark">{item.quantity}</td>
                                 <td className="font-dark">{item.total_sale}</td>
                                 <td className="font-info">{item.total_income}</td>
-                                <td className="font-info">{item.category}</td>
-                                <td className="font-info">{item.storage_location}</td>
-                                <td className="font-info">{item.manufaturer}</td>
+                                <td className="font-info">
+                                    {/* {item.related_categories_count} */}
+                                    {
+                                        item.related_categories.map(item=><span className="badge m-1 badge-primary " key={item.id}>{item.name}</span>)
+                                    }
+                                </td>
+                                <td className="font-info">
+                                    {/* {item.related_drug_storage_count} */}
+                                    {
+                                        item.related_drug_storage.map(item=><span className="badge m-1 badge-primary " key={item.id}>{item.name}</span>)
+                                    }
+                                </td>
+                                <td className="font-info">
+                                    {/* {item.related_drug_manufacturer_count} */}
+                                    {
+                                        item.related_drug_manufacturer.map(item=><span className="badge m-1 badge-primary " key={item.id}>{item.name}</span>)
+                                    }
+                                </td>
                                 <td className="font-info">{item.manufacture_date}</td>
                                 <td className="font-info">{item.expiry_date}</td>
                                 <td className="font-info">{item?.status === 1 ? <span className="badge bg-success">Active</span> : <span className="badge bg-warning">Deactive</span>}</td>
                                 <td style={{ width: 370 }}>
                                     <div className="d-flex flex-wrap">
-                                        <Link to={"/dispensary/inventory/suppliers/details/"+item.id} className="btn m-2 btn-air-secondary">Details</Link>
-                                        <Link to={"/dispensary/inventory/suppliers/edit/"+item.id} className="btn m-2 btn-air-success">Edit</Link>
+                                        <Link to={"/dispensary/inventory/drugs/details/"+item.id} className="btn m-2 btn-air-secondary">Details</Link>
+                                        <Link to={"/dispensary/inventory/drugs/edit/"+item.id} className="btn m-2 btn-air-success">Edit</Link>
                                         <Link to="#/" onClick={()=>delete_data(item.id)} className="btn m-2 btn-air-danger">Delete</Link>
                                     </div>
                                 </td>

@@ -1,11 +1,12 @@
 import axios from 'axios';
+import lodash from 'lodash';
 import React, { useEffect, useState } from 'react'
 import { Pagination } from 'react-laravel-paginex'
 import { Link } from 'react-router-dom';
 import { UseCommonData } from '../../../../../Hooks/UseCommonData';
 
-function CategoryListModal(props) {
-    const [MedicineList, setMedicineList] = useState({})
+function UserSupplierListModal(props) {
+    const [DataList, setDataList] = useState({})
     const [selectedCategories, setSelectedCategories] = useState([])
     const [selectedCategoryDetails, setSelectedCategoryDetails] = useState([])
     const { calert } = UseCommonData();
@@ -22,27 +23,27 @@ function CategoryListModal(props) {
     }, [])
 
     useEffect(() => {
-        props.setData({ ids: selectedCategories, details: selectedCategoryDetails })
+        const unsubcribe = props.setData({ ids: selectedCategories, details: selectedCategoryDetails })
         return () => {
             props.setData({ ids: selectedCategories, details: selectedCategoryDetails })
         };
     }, [selectedCategories])
 
     const LoadData = (data) => {
-        axios.get(`${process.env.REACT_APP_API_LINK}/inventory/category/all?page=${data.page}`)
+        axios.get(`${process.env.REACT_APP_API_LINK}/inventory/supplier/all?page=${data.page}&key=${data?.key||''}`)
             .then(res => {
                 res.data.data = res.data.data.map(i => {
                     if (props.Data.ids.includes(i.id)) i.checked = true;
                     return i;
                 });
-                setMedicineList(res.data);
+                setDataList(res.data);
             })
     }
 
     const handle_select = (id, details) => {
         let temp_list = [...selectedCategories];
         let temp_details_list = [...selectedCategoryDetails];
-        let medicine_list = { ...MedicineList };
+        let medicine_list = { ...DataList };
 
         if (temp_list.includes(id)) {
             temp_list = temp_list.filter(i => i !== id)
@@ -66,7 +67,7 @@ function CategoryListModal(props) {
 
         setSelectedCategories(temp_list);
         setSelectedCategoryDetails(temp_details_list);
-        setMedicineList(medicine_list);
+        setDataList(medicine_list);
 
         // console.log(medicine_list.data);
     }
@@ -74,7 +75,7 @@ function CategoryListModal(props) {
     const remove_item = (id, item) => {
         let temp_list = [...selectedCategories];
         let temp_details_list = [...selectedCategoryDetails];
-        let medicine_list = { ...MedicineList };
+        let medicine_list = { ...DataList };
 
         temp_list = temp_list.filter(i => i !== id)
         temp_details_list = temp_details_list.filter(i => i.id !== id)
@@ -85,11 +86,16 @@ function CategoryListModal(props) {
 
         setSelectedCategories(temp_list);
         setSelectedCategoryDetails(temp_details_list);
-        setMedicineList(medicine_list);
+        setDataList(medicine_list);
     }
 
     return (
         <div>
+            <div className="row">
+                <div className="col-lg-6">
+                    <input type="text" onKeyUp={lodash.debounce((e)=>LoadData({page:1,key:e.target.value}),1000)} placeholder="search by name" className="form-control ms-2" />
+                </div>
+            </div>
             <ul className="d-flex">
                 {
                     selectedCategoryDetails.map((item) => {
@@ -107,16 +113,17 @@ function CategoryListModal(props) {
                     <thead>
                         <tr>
                             <th></th>
-                            <th scope="col">Category Id</th>
+                            <th scope="col">Supplier Id</th>
                             <th scope="col">Name</th>
-                            <th scope="col">Discription</th>
-                            <th scope="col">Total Medicine</th>
+                            <th scope="col">Company</th>
+                            <th scope="col">Contact Number</th>
                             <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            MedicineList?.data?.map(item => {
+                            DataList?.data?.map(item => {
+                                item.name = item.supplier_name;
                                 return <tr key={item.id}>
                                     <td>
                                         {
@@ -127,9 +134,9 @@ function CategoryListModal(props) {
                                         }
                                     </td>
                                     <td> #{item.id} </td>
-                                    <td className="digits">{item.name}</td>
-                                    <td className="font-secondary">{item.description}</td>
-                                    <td className="font-info">{item.total_medicine}</td>
+                                    <td className="digits">{item.supplier_name}</td>
+                                    <td className="font-secondary">{item.compay_name}</td>
+                                    <td className="font-info">{item.contact_number}</td>
                                     <td className="font-info">{item?.status === 1 ? <span className="badge bg-success">Active</span> : <span className="badge bg-warning">Deactive</span>}</td>
 
                                 </tr>
@@ -139,12 +146,12 @@ function CategoryListModal(props) {
                     </tbody>
                 </table>
                 {
-                    MedicineList?.data?.length > 0 &&
-                    <Pagination changePage={LoadData} numbersCountForShow={6} data={MedicineList} />
+                    DataList?.data?.length > 0 &&
+                    <Pagination changePage={LoadData} numbersCountForShow={6} data={DataList} />
                 }
             </div>
         </div>
     )
 }
 
-export default CategoryListModal
+export default UserSupplierListModal

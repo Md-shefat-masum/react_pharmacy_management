@@ -47,22 +47,34 @@
     <script src="/js/pace.js"></script>
     <script>
         Pace.start();
+        window.addEventListener('load',()=>{
+            window.show_alert = (text = '', style = 'text-light', time = 3000) => {
+                custom_alert.classList.add('show');
+                alert_text.textContent  = text;
+                alert_text.className = style;
+                setTimeout(() => {
+                    custom_alert.classList.remove('show')
+                }, time);
+            }
+        })
     </script>
 </head>
 
 <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <div class="alert alert-dark dark alert-dismissible fade pe-5"
+        id="custom_alert"
+        style="display: inline-block;right:15px;bottom: 0;position: fixed;" role="alert">
+        <i class="icon-info-alt"></i>
+        <span class="text " id="alert_text">
+            data uploaded
+        </span>
+        <button type="button" onclick="custom_alert.classList.remove('show');" class="btn-close" data-bs-dismiss="alert"
+            aria-label="Close">
+            <span aria-hidden="true"></span>
+        </button>
+    </div>
 </body>
 
 </html>

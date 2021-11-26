@@ -4,7 +4,7 @@ import { Pagination } from 'react-laravel-paginex'
 import { Link } from 'react-router-dom';
 import { UseCommonData } from '../../../../../Hooks/UseCommonData';
 
-function CategoryListModal(props) {
+function ManufacturerListModal(props) {
     const [MedicineList, setMedicineList] = useState({})
     const [selectedCategories, setSelectedCategories] = useState([])
     const [selectedCategoryDetails, setSelectedCategoryDetails] = useState([])
@@ -22,14 +22,14 @@ function CategoryListModal(props) {
     }, [])
 
     useEffect(() => {
-        props.setData({ ids: selectedCategories, details: selectedCategoryDetails })
+        const unsubcribe = props.setData({ ids: selectedCategories, details: selectedCategoryDetails })
         return () => {
             props.setData({ ids: selectedCategories, details: selectedCategoryDetails })
         };
     }, [selectedCategories])
 
     const LoadData = (data) => {
-        axios.get(`${process.env.REACT_APP_API_LINK}/inventory/category/all?page=${data.page}`)
+        axios.get(`${process.env.REACT_APP_API_LINK}/inventory/manufacturer/all?page=${data.page}`)
             .then(res => {
                 res.data.data = res.data.data.map(i => {
                     if (props.Data.ids.includes(i.id)) i.checked = true;
@@ -87,7 +87,7 @@ function CategoryListModal(props) {
         setSelectedCategoryDetails(temp_details_list);
         setMedicineList(medicine_list);
     }
-
+    
     return (
         <div>
             <ul className="d-flex">
@@ -107,7 +107,7 @@ function CategoryListModal(props) {
                     <thead>
                         <tr>
                             <th></th>
-                            <th scope="col">Category Id</th>
+                            <th scope="col">Manufacturer Id</th>
                             <th scope="col">Name</th>
                             <th scope="col">Discription</th>
                             <th scope="col">Total Medicine</th>
@@ -147,4 +147,4 @@ function CategoryListModal(props) {
     )
 }
 
-export default CategoryListModal
+export default ManufacturerListModal

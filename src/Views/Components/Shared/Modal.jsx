@@ -25,7 +25,6 @@ function Modal() {
                         </div>
                         <div className="modal-footer">
                             <button type="button" onClick={() => setTriggerModal(false)} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Pay</button>
                         </div>
                     </div>
                 </div>
