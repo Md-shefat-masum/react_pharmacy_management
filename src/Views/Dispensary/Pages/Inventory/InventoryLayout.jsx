@@ -22,7 +22,7 @@ function InventoryLayout() {
                         <button onClick={() => handleNavigate('suppliers') } className={"btn btn-outline-secondary m-1 " + (BillingFormShow === 'suppliers' ? 'active' : '')}>Suppliers</button>
                         <button onClick={() => handleNavigate('manufactures') } className={"btn btn-outline-secondary m-1 " + (BillingFormShow === 'manufactures' ? 'active' : '')}>Manufactures</button>
                         <div className="d-inline-block">
-                            <input type="text" className="form-control m-1" placeholder="search.." />
+                            {/* <input type="text" className="form-control m-1" placeholder="search.." /> */}
                         </div>
                     </div>
                 </div>

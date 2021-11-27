@@ -71,9 +71,11 @@ function AllDrugs() {
                         MedicineList?.data?.map(item => {
                             return <tr key={item.id}>
                                 <td> #{item.id} </td>
-                                <td className="digits">{item.photo}</td>
+                                <td className="digits">
+                                    <img src={item.full_photo_url} style={{width: 80,}} className="img-thumbnail" />
+                                </td>
                                 <td className="font-secondary">{item.name}</td>
-                                <td className="font-dark">{item.quantity}</td>
+                                <td className="font-digits">{item.quantity}</td>
                                 <td className="font-dark">{item.total_sale}</td>
                                 <td className="font-info">{item.total_income}</td>
                                 <td className="font-info">

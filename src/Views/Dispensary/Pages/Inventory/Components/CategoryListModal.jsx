@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { UseCommonData } from '../../../../../Hooks/UseCommonData';
 
 function CategoryListModal(props) {
-    const [MedicineList, setMedicineList] = useState({})
+    const [CategoryList, setCategoryList] = useState({})
     const [selectedCategories, setSelectedCategories] = useState([])
     const [selectedCategoryDetails, setSelectedCategoryDetails] = useState([])
     const { calert } = UseCommonData();
@@ -35,14 +35,14 @@ function CategoryListModal(props) {
                     if (props.Data.ids.includes(i.id)) i.checked = true;
                     return i;
                 });
-                setMedicineList(res.data);
+                setCategoryList(res.data);
             })
     }
 
     const handle_select = (id, details) => {
         let temp_list = [...selectedCategories];
         let temp_details_list = [...selectedCategoryDetails];
-        let medicine_list = { ...MedicineList };
+        let medicine_list = { ...CategoryList };
 
         if (temp_list.includes(id)) {
             temp_list = temp_list.filter(i => i !== id)
@@ -66,7 +66,7 @@ function CategoryListModal(props) {
 
         setSelectedCategories(temp_list);
         setSelectedCategoryDetails(temp_details_list);
-        setMedicineList(medicine_list);
+        setCategoryList(medicine_list);
 
         // console.log(medicine_list.data);
     }
@@ -74,7 +74,7 @@ function CategoryListModal(props) {
     const remove_item = (id, item) => {
         let temp_list = [...selectedCategories];
         let temp_details_list = [...selectedCategoryDetails];
-        let medicine_list = { ...MedicineList };
+        let medicine_list = { ...CategoryList };
 
         temp_list = temp_list.filter(i => i !== id)
         temp_details_list = temp_details_list.filter(i => i.id !== id)
@@ -85,7 +85,7 @@ function CategoryListModal(props) {
 
         setSelectedCategories(temp_list);
         setSelectedCategoryDetails(temp_details_list);
-        setMedicineList(medicine_list);
+        setCategoryList(medicine_list);
     }
 
     return (
@@ -94,7 +94,7 @@ function CategoryListModal(props) {
                 {
                     selectedCategoryDetails.map((item) => {
                         return <li key={item.id} className="m-2">
-                            <button className="btn btn-sm btn-outline-info px-2">
+                            <button type="button" className="btn btn-sm btn-outline-info px-2">
                                 <i onClick={() => remove_item(item.id, item)} className="fa text-danger fa-times me-2"></i>
                                 {item.name}
                             </button>
@@ -116,7 +116,7 @@ function CategoryListModal(props) {
                     </thead>
                     <tbody>
                         {
-                            MedicineList?.data?.map(item => {
+                            CategoryList?.data?.map(item => {
                                 return <tr key={item.id}>
                                     <td>
                                         {
@@ -139,8 +139,8 @@ function CategoryListModal(props) {
                     </tbody>
                 </table>
                 {
-                    MedicineList?.data?.length > 0 &&
-                    <Pagination changePage={LoadData} numbersCountForShow={6} data={MedicineList} />
+                    CategoryList?.data?.length > 0 &&
+                    <Pagination changePage={LoadData} numbersCountForShow={6} data={CategoryList} />
                 }
             </div>
         </div>

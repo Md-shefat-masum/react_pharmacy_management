@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 // import { useNavigate } from 'react-router-dom';
 import { UseCommonData } from '../../../../../Hooks/UseCommonData'
 import FormError from '../../../../Components/Shared/FormError';
@@ -7,13 +7,30 @@ import CategoryListModal from '../Components/CategoryListModal';
 import ManufacturerListModal from '../Components/ManufacturerListModal';
 import StorageListModal from '../Components/StorageListModal';
 import UserSupplierListModal from '../Components/UserSupplierListModal';
+import { Editor } from '@tinymce/tinymce-react';
 
+const tiny_style = {
+    height: 300,
+    menubar: false,
+    plugins: [
+        'advlist autolink lists link image charmap print preview anchor',
+        'searchreplace visualblocks code fullscreen',
+        'insertdatetime media table paste code help wordcount'
+    ],
+    toolbar: 'undo redo | formatselect | ' +
+        'bold italic backcolor | alignleft aligncenter ' +
+        'alignright alignjustify | bullist numlist outdent indent | ' +
+        'removeformat | help',
+    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+};
 function CreateDrugs() {
     const { control_modal, setModalContent } = UseCommonData();
-    const [categoryIds, setCategoryIds] = useState({ ids: [1,2], details: [] });
-    const [manufacturerIds, setManufacturerIds] = useState({ ids: [1,2], details: [] });
-    const [storageIds, setStorageIds] = useState({ ids: [1,2], details: [] });
-    const [supplierIds, setSupplierIds] = useState({ ids: [1,2], details: [] });
+    const [preview, setPreview] = useState('');
+    const editorRef = useRef(null);
+    const [categoryIds, setCategoryIds] = useState({ ids: [], details: [] });
+    const [manufacturerIds, setManufacturerIds] = useState({ ids: [], details: [] });
+    const [storageIds, setStorageIds] = useState({ ids: [], details: [] });
+    const [supplierIds, setSupplierIds] = useState({ ids: [], details: [] });
 
     const formHandler = (e) => {
         e.preventDefault();
@@ -22,19 +39,22 @@ function CreateDrugs() {
         form_data.append('manufacturer_id', JSON.stringify(manufacturerIds.ids));
         form_data.append('storage_location_id', JSON.stringify(storageIds.ids));
         form_data.append('supplier_id', JSON.stringify(supplierIds.ids));
+        form_data.append('dosage_and_administration', editorRef.current.getContent());
+
         axios.post(`${process.env.REACT_APP_API_LINK}/inventory/drug/create`, form_data)
             .then((res) => {
-                console.log(res.data);
-                // e.target.reset();
-                // setCategoryIds({ ids: [], details: [] });
-                // setManufacturerIds({ ids: [], details: [] });
-                // setStorageIds({ ids: [], details: [] });
-                // setSupplierIds({ ids: [], details: [] });
-                window.show_alert('Drug created successfully.','text-light',4000);
+                // console.log(res.data);
+                e.target.reset();
+                setCategoryIds({ ids: [], details: [] });
+                setManufacturerIds({ ids: [], details: [] });
+                setStorageIds({ ids: [], details: [] });
+                setSupplierIds({ ids: [], details: [] });
+                setPreview('');
+                window.show_alert('Drug created successfully.', 'text-light', 4000);
             })
             .catch((error) => {
                 let message = error?.response?.data?.err_message;
-                window.show_alert(message || 'something is wrong try again..','text-warning',4000);
+                window.show_alert(message || 'something is wrong try again..', 'text-warning', 4000);
             })
     }
 
@@ -58,7 +78,7 @@ function CreateDrugs() {
                         </div>
                         <div className="card-body">
 
-                            <form action="" onSubmit={(e) => formHandler(e)}  encType="multipart/formdata">
+                            <form action="" onSubmit={(e) => formHandler(e)} encType="multipart/formdata">
                                 <div className="form-group">
                                     <div className="mb-3 row">
                                         <label htmlFor="" className="col-sm-3 col-form-label">Drug Name :</label>
@@ -194,8 +214,15 @@ function CreateDrugs() {
                                     <div className="mb-3 row">
                                         <label htmlFor="" className="col-sm-3 col-form-label">No of unit in package :</label>
                                         <div className="col-sm-9">
-                                            <input type="text" name="no_of_unit_in_package" className="form-control" placeholder="No of limit in package" />
+                                            <input type="text" name="no_of_unit_in_package" className="form-control" placeholder="No of unit in package" />
                                             <FormError field_name="no_of_unit_in_package"></FormError>
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 row">
+                                        <label htmlFor="" className="col-sm-3 col-form-label">Initial Quantity :</label>
+                                        <div className="col-sm-9">
+                                            <input type="text" name="quantity" className="form-control" placeholder="Initial quantity" />
+                                            <FormError field_name="quantity"></FormError>
                                         </div>
                                     </div>
                                     <div className="mb-3 row">
@@ -227,10 +254,37 @@ function CreateDrugs() {
                                         </div>
                                     </div>
                                     <div className="mb-3 row">
+                                        <label htmlFor="" className="col-sm-3 col-form-label">Indication :</label>
+                                        <div className="col-sm-9">
+                                            <textarea name="indication" className="form-control" placeholder="indication" />
+                                            <FormError field_name="indication"></FormError>
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 row">
+                                        <label htmlFor="" className="col-sm-3 col-form-label">Preparation :</label>
+                                        <div className="col-sm-9">
+                                            <textarea name="preparation" className="form-control" placeholder="Preparation" />
+                                            <FormError field_name="preparation"></FormError>
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 row">
+                                        <label htmlFor="" className="col-sm-3 col-form-label">Dosage and administration :</label>
+                                        <div className="col-sm-9">
+                                            {/* <textarea name="dosage_and_administration" className="form-control" placeholder="Preparation" /> */}
+                                            <Editor
+                                                onInit={(evt, editor) => editorRef.current = editor}
+                                                initialValue="<p>Dosage and administration.</p>"
+                                                init={tiny_style}
+                                            />
+                                            <FormError field_name="dosage_and_administration"></FormError>
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 row">
                                         <label htmlFor="" className="col-sm-3 col-form-label">Photo :</label>
                                         <div className="col-sm-9">
-                                            <input type="file" name="photo" className="form-control" placeholder="Unit Price" />
+                                            <input onChange={(e) => setPreview(URL.createObjectURL(e.target.files[0]))} type="file" name="photo" className="form-control" placeholder="Unit Price" />
                                             <FormError field_name="photo"></FormError>
+                                            <img src={preview} style={{ width: 120, }} className="img-thumbnail mt-1" />
                                         </div>
                                     </div>
 

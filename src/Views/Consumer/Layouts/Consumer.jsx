@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import { Outlet } from 'react-router-dom'
 import { UseAuth } from '../../../Hooks/UseAuth'
 import { UseCommonData } from '../../../Hooks/UseCommonData'
+import Modal from '../../Components/Shared/Modal'
 import Header from './Includes/Header'
 import Sidebar from './Includes/Sidebar'
 
@@ -51,7 +52,7 @@ export default function Admin() {
                     </div>
                 </div>
             </div>
-            
+            <Modal></Modal>
         </div>
     )
 }

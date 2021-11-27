@@ -100,7 +100,7 @@ function UserSupplierListModal(props) {
                 {
                     selectedCategoryDetails.map((item) => {
                         return <li key={item.id} className="m-2">
-                            <button className="btn btn-sm btn-outline-info px-2">
+                            <button  type="button" className="btn btn-sm btn-outline-info px-2">
                                 <i onClick={() => remove_item(item.id, item)} className="fa text-danger fa-times me-2"></i>
                                 {item.name}
                             </button>

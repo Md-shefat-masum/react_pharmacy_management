@@ -130,7 +130,8 @@ const UseFirebase = () => {
                 .catch(err=>{
                     if(err.response?.data?.message == 'Unauthenticated.'){
                         localStorage.removeItem('access_token');
-                        navigate('/')
+                        navigate('/');
+                        window.location.reload();
                     }
                 })
         } else {

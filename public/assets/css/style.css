@@ -1,4 +1,3 @@
-
 /**=====================
      01. General CSS Start
 ==========================**/
@@ -35569,4 +35568,9 @@ body .page-wrapper .page-body-wrapper .page-sidebar.native-image-bg .sidebar-use
   .vertical-layout .center-small-size .media-body {
     min-width: 34%;
   }
+}
+
+.tox .tox-notification--warn,
+.tox .tox-notification--warning {
+  display: none !important;
 }
