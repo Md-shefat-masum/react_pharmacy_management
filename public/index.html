@@ -47,16 +47,18 @@
     <script src="/js/pace.js"></script>
     <script>
         Pace.start();
-        window.addEventListener('load',()=>{
+        window.addEventListener('load', () => {
             window.show_alert = (text = '', style = 'text-light', time = 3000) => {
                 custom_alert.classList.add('show');
-                alert_text.textContent  = text;
+                alert_text.textContent = text;
                 alert_text.className = style;
                 setTimeout(() => {
                     custom_alert.classList.remove('show')
                 }, time);
             }
+
         })
+
         window.format_number = (number) => new Intl.NumberFormat().format(number);
     </script>
 </head>
@@ -64,18 +66,16 @@
 <body>
     <div id="root"></div>
 
-    <div class="alert alert-dark dark alert-dismissible fade pe-5"
-        id="custom_alert"
-        style="display: inline-block;right:15px;bottom: 0;position: fixed;" role="alert">
+    <div class="alert alert-dark dark alert-dismissible fade pe-5" id="custom_alert"
+        style="display: inline-block;right:15px;bottom: 0;position: fixed;z-index: 9999999;" role="alert">
         <i class="icon-info-alt"></i>
-        <span class="text " id="alert_text">
-            data uploaded
-        </span>
+        <span class="text " id="alert_text"> </span>
         <button type="button" onclick="custom_alert.classList.remove('show');" class="btn-close" data-bs-dismiss="alert"
             aria-label="Close">
             <span aria-hidden="true"></span>
         </button>
     </div>
+
 </body>
 
 </html>

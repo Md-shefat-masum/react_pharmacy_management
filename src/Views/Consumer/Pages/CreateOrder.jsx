@@ -1,18 +1,27 @@
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { UseAuth } from '../../../Hooks/UseAuth'
 import { UseCommonData } from '../../../Hooks/UseCommonData'
 import MedicineListForOrderModal from '../../Dispensary/Pages/Inventory/Components/MedicineListForOrderModal'
 import Billing from '../Components/Billing/Billing'
 import Payment from '../Components/Billing/Payment'
 import Shipping from '../Components/Billing/Shipping'
+import PharmacySearch from '../Components/Map/PharmacySearch'
 
 function CreateOrder() {
+    const { user } = UseAuth();
     const { control_modal, setModalContent } = UseCommonData();
     const [selectedMedicine, setSelectedMedicine] = useState([]);
     const [total, setTotal] = useState(0)
 
-    const [BillingFormShow, setBillingFormShow] = useState('billing')
+    const [BillingFormShow, setBillingFormShow] = useState('select_pharmacy')
     const [ShowPaymentModal, setShowPaymentModal] = useState(false)
+
     const [ShippingForm, setShippingForm] = useState(true)
+    const [seletedPharmacy, setSeletedPharmacy] = useState({})
+    const [billingAddress, setBillingAddress] = useState({})
+    const [shippingAddress, setShippingAddress] = useState({})
+    const [paymentInfo, setPaymentInfo] = useState({})
 
     const setQty = (item, e) => {
         let qty = parseInt(e.target.value);
@@ -24,6 +33,17 @@ function CreateOrder() {
         setSelectedMedicine(temp_cart);
         // console.log(e.target);
     }
+
+    useEffect(() => {
+        let temp_user = {};
+        for (const key in user) {
+            if (Object.hasOwnProperty.call(user, key)) {
+                const element = user[key];
+                temp_user['billing_' + key] = element;
+            }
+        }
+        setBillingAddress(temp_user);
+    }, [])
 
     useEffect(() => {
         countTotal();
@@ -49,6 +69,29 @@ function CreateOrder() {
         temp_list.splice(index, 1);
         setSelectedMedicine(temp_list);
     }
+
+    const submitOrder = () => {
+        console.log('get', seletedPharmacy, billingAddress, shippingAddress, paymentInfo, ShippingForm);
+        let data = {
+            seletedPharmacy,
+            billingAddress,
+            shippingAddress,
+            paymentInfo,
+            ShippingForm
+        };
+        axios.post(`${process.env.REACT_APP_API_LINK}/order/create`, data)
+            .then(res => {
+                console.log(res.data);
+                alert('order successfull');
+                setShowPaymentModal(!ShowPaymentModal)
+            })
+            .catch(err => {
+                console.log(err.response.data);
+                setBillingFormShow(err.response.data?.err_for);
+                window.show_alert(err.response?.data?.err_description, 'text-warning', 5000);
+            })
+    }
+
 
     return (
         <div>
@@ -132,7 +175,7 @@ function CreateOrder() {
                                                             data-bs-toggle="modal"
                                                             onClick={() => setShowPaymentModal(!ShowPaymentModal)}
                                                             data-bs-target="#staticBackdrop">
-                                                            Proceed To Checkout
+                                                            Proceed Order
                                                         </button>
                                                     </div>
                                                 </td>
@@ -150,13 +193,14 @@ function CreateOrder() {
                     tabIndex="-1" aria-labelledby="staticBackdropLabel"
                     style={{ display: ShowPaymentModal && 'block', backdropFilter: 'blur(3px)' }}
                     aria-hidden="true">
-                    <div className="modal-dialog modal-lg modal-dialog-centered">
+                    <div className="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title" id="staticBackdropLabel">Checkout Form</h5>
                                 <button type="button" className="btn-close" onClick={() => setShowPaymentModal(!ShowPaymentModal)} data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
+
                                 <div className="form-group">
                                     <label htmlFor="shipping_form" >
                                         <input type="radio" id="shipping_form" name="shipping_form" onClick={() => setShippingForm(true)} defaultChecked={ShippingForm ? true : false} />
@@ -170,6 +214,7 @@ function CreateOrder() {
                                     </label>
                                 </div>
                                 <div className="d-flex flex-wrap">
+                                    <button onClick={() => setBillingFormShow('select_pharmacy')} className={"btn btn-outline-success m-1 " + (BillingFormShow === 'select_pharmacy' ? 'active' : '')}>Select Pharmacy</button>
                                     {
                                         ShippingForm === true &&
                                         <button onClick={() => setBillingFormShow('billing')} className={"btn btn-outline-info m-1 " + (BillingFormShow === 'billing' ? 'active' : '')}>Billing</button>
@@ -183,20 +228,24 @@ function CreateOrder() {
                                 <div>
                                     <div className="card-body">
                                         {
+                                            (BillingFormShow === 'select_pharmacy') &&
+                                            <PharmacySearch seletedPharmacy={seletedPharmacy} setSeletedPharmacy={setSeletedPharmacy}></PharmacySearch>
+                                        }
+                                        {
                                             (ShippingForm === true && BillingFormShow === 'billing') &&
-                                            <Billing></Billing>
+                                            <Billing billingAddress={billingAddress} setBillingAddress={setBillingAddress}></Billing>
                                         }
                                         {
                                             (ShippingForm === true && BillingFormShow === 'shipping') &&
-                                            <Shipping></Shipping>
+                                            <Shipping shippingAddress={shippingAddress} billingAddress={billingAddress} setShippingAddress={setShippingAddress}></Shipping>
                                         }
                                         {
                                             BillingFormShow === 'payment' || !ShippingForm ?
                                                 <div>
                                                     <div className="text-center mb-4">
-                                                        <img src="https://epaymaker.com/images/logo/1591645593.logo_F.png" style={{ width: 280, }} alt="" srcset="" />
+                                                        <img src="https://epaymaker.com/images/logo/1591645593.logo_F.png" style={{ width: 280, }} />
                                                     </div>
-                                                    <Payment></Payment>
+                                                    <Payment paymentInfo={paymentInfo} setPaymentInfo={setPaymentInfo}></Payment>
                                                 </div>
 
                                                 : ''
@@ -207,8 +256,8 @@ function CreateOrder() {
                                 </div>
                             </div>
                             <div className="modal-footer">
+                                <button type="button" onClick={() => submitOrder()} className="btn btn-primary">Pay and Complete Order</button>
                                 <button type="button" onClick={() => setShowPaymentModal(!ShowPaymentModal)} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-primary">Pay</button>
                             </div>
                         </div>
                     </div>
