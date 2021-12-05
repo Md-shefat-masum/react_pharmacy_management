@@ -135,6 +135,7 @@ export class MedicineListForOrderModal extends Component {
                         <th scope="col"></th>
                         <th scope="col">Photo</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Need Prescription</th>
                         <th scope="col">Category</th>
                         <th scope="col">Manufacturer</th>
                         <th scope="col">Unit price</th>
@@ -156,6 +157,13 @@ export class MedicineListForOrderModal extends Component {
                                     <img src={item.full_photo_url} style={{ width: 40 }} alt={item.name} />
                                 </td>
                                 <td>{item.name}</td>
+                                <td>
+                                    {
+                                        item?.need_prescription?
+                                            <span className="badge badge-danger">Yes</span>
+                                        :<span className="badge badge-light bg-info">no</span>
+                                    }
+                                </td>
                                 <td className="font-info">
                                     {
                                         item.related_categories.map(iteme => <span className="badge m-1 badge-primary " key={iteme.id}>{iteme.name}</span>)
@@ -166,7 +174,7 @@ export class MedicineListForOrderModal extends Component {
                                         item.related_drug_manufacturer.map(iteme => <span className="badge m-1 badge-primary " key={iteme.id}>{iteme.name}</span>)
                                     }
                                 </td>
-                                <td style={{ width: 120 }}>$ {item.unit_price}</td>
+                                <td style={{ width: 120 }}>$ {item.sales_price}</td>
                             </tr>
                         })
                     }

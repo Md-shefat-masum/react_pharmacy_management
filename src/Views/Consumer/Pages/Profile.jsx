@@ -1,5 +1,7 @@
 import React from 'react'
 import { UseAuth } from '../../../Hooks/UseAuth'
+import UpdateProfileInformation from '../../Components/Shared/UpdateProfileInformation';
+import UpdateProfilePic from '../../Components/Shared/UpdateProfilePic';
 
 function Profile() {
     let { user } = UseAuth();
@@ -9,17 +11,7 @@ function Profile() {
                 <div className="col-md-8">
                     <div className="card hovercard text-center">
                         <div className="cardheader" style={{ height: 240 }}></div>
-                        <div className="user-image">
-                            <div className="avatar">
-                                {
-                                    user?.photoURL ?
-                                        <img alt="profile" src={user.photoURL} />
-                                        :
-                                        <img alt="profile" src="../assets/images/user/11.png" />
-                                }
-                            </div>
-                            <div className="icon-wrapper"><i className="icon-pencil"></i></div>
-                        </div>
+                        <UpdateProfilePic></UpdateProfilePic>
                         <div className="info">
                             <div className="row">
                                 <div className="col-sm-6 col-lg-4 order-sm-1 order-xl-0">
@@ -33,7 +25,7 @@ function Profile() {
                                         <div className="col-md-6">
                                             <div className="ttl-info text-start">
                                                 <h6><i className="fa fa-calendar"></i>&nbsp;&nbsp;&nbsp;BOD</h6>
-                                                <span>02 January 1988</span>
+                                                <span>{user.dob}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -50,13 +42,16 @@ function Profile() {
                                         <div className="col-md-6">
                                             <div className="ttl-info text-start">
                                                 <h6><i className="fa fa-phone"></i>&nbsp;&nbsp;&nbsp;Contact Us</h6>
-                                                <span>+880 8273847</span>
+                                                <span>{user.contact_number}</span>
                                             </div>
                                         </div>
                                         <div className="col-md-6">
                                             <div className="ttl-info text-start">
                                                 <h6><i className="fa fa-location-arrow"></i>&nbsp;&nbsp;&nbsp;Location</h6>
-                                                <span>B69 Near Schoool Demo Home</span>
+                                                <span className="text-capitalize">
+                                                    {user.street}, &nbsp;
+                                                    {user.city}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -64,70 +59,7 @@ function Profile() {
                             </div>
                             <hr />
 
-                            <form action="" className="theme-form">
-                                <div className="card-header">
-                                    <h5>Update Information</h5>
-                                </div>
-                                <div className="card-body">
-                                    <div className="mb-3 row">
-                                        <label for="inputEmail3" className="col-sm-3 col-form-label">First Name</label>
-                                        <div className="col-sm-9">
-                                            <input type="email" className="form-control" id="inputEmail3" placeholder="First Name" />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row">
-                                        <label for="inputEmail3" className="col-sm-3 col-form-label">Last Name</label>
-                                        <div className="col-sm-9">
-                                            <input type="email" className="form-control" id="inputEmail3" placeholder="Last Name" />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row">
-                                        <label for="inputEmail3" className="col-sm-3 col-form-label">Email</label>
-                                        <div className="col-sm-9">
-                                            <input type="email" className="form-control" id="inputEmail3" placeholder="Email" />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row">
-                                        <label for="inputEmail3" className="col-sm-3 col-form-label">Contact Number</label>
-                                        <div className="col-sm-9">
-                                            <input type="email" className="form-control" id="inputEmail3" placeholder="contact number" />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row">
-                                        <label for="inputEmail3" className="col-sm-3 col-form-label">City</label>
-                                        <div className="col-sm-9">
-                                            <input type="text" className="form-control" id="inputEmail3" placeholder="City" />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row">
-                                        <label for="inputEmail3" className="col-sm-3 col-form-label">Zip Code</label>
-                                        <div className="col-sm-9">
-                                            <input type="text" className="form-control" id="inputEmail3" placeholder="zip code" />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row">
-                                        <label for="inputEmail3" className="col-sm-3 col-form-label">State</label>
-                                        <div className="col-sm-9">
-                                            <input type="text" className="form-control" id="inputEmail3" placeholder="State" />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row">
-                                        <label for="inputPassword3" className="col-sm-3 col-form-label">Password</label>
-                                        <div className="col-sm-9">
-                                            <input type="password" className="form-control" id="inputPassword3" placeholder="Password" />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row">
-                                        <label for="inputPassword3" className="col-sm-3 col-form-label">Confirm Password</label>
-                                        <div className="col-sm-9">
-                                            <input type="password" className="form-control" id="inputPassword3" placeholder="Confirm Password" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="card-footer">
-                                    <button className="btn btn-primary">Submit</button>
-                                </div>
-                            </form>
+                            <UpdateProfileInformation></UpdateProfileInformation>
 
                         </div>
                     </div>

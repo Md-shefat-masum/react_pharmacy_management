@@ -48,8 +48,14 @@ const options = {
 function PharmacySearch(props) {
     const [Loaded, setLoaded] = useState(false)
     const [locations, setLocations] = useState([])
+    const [selectedLocation, setSelectedLocation] = useState({})
     const { user } = UseAuth();
+
     useEffect(() => {
+        user.lat = parseFloat(user.lat);
+        user.lng = parseFloat(user.lng);
+        // console.log(user);
+
         axios.get(`${process.env.REACT_APP_API_LINK}/user/pharmacy-location`)
             .then(res => {
                 setLocations(res.data);
@@ -57,7 +63,13 @@ function PharmacySearch(props) {
                     setLoaded(true);
                 }, 1000);
             })
-    }, [])
+    }, []);
+
+    const get_location = (data) => {
+        props.setSeletedPharmacy(data);
+        setSelectedLocation(data);
+    }
+    
     const [activeMarker, setActiveMarker] = useState(null);
 
     const handleActiveMarker = (marker) => {
@@ -81,31 +93,31 @@ function PharmacySearch(props) {
                         <h4>Pharmacy's in 1.5 km nearby you.</h4>
                         <span className="text-dark">
                             slected pharmacy <br />
-                            name: {props.seletedPharmacy?.user_name}  <br />
-                            street: {props.seletedPharmacy?.street} <br />
-                            contact: {props.seletedPharmacy?.contact_number} <br />
+                            name: {selectedLocation.user_name}  <br />
+                            street: {selectedLocation?.street} <br />
+                            contact: {selectedLocation?.contact_number} <br />
                         </span>
                     </div>
                     <div className="card-body">
                         {Loaded &&
                             <LoadScript
-                                googleMapsApiKey="AIzaSyCXfyI7osFNUJSHyOUZU6nTK8hUSe4Z0mY"
+                                googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAP_API}
                             >
                                 <GoogleMap
                                     mapContainerStyle={{ height: '40vh', width: '100%' }}
                                     center={{
-                                        lat: 23.708981, lng: 90.436921
+                                        lat: user.lat, lng: user.lng
                                     }}
                                     zoom={18}
                                 >
                                     <Marker
-                                        position={{ lat: 23.708981, lng: 90.436921 }}
+                                        position={{ lat: user.lat, lng: user.lng }}
                                         // icon= {user.photoURL}
                                         icon={"/user_loc.png"}
                                         animation="BOUNCE"
                                         title={user.displayName}
                                     >
-                                        <InfoWindow position={{ lat: 23.708981, lng: 90.436921 }} anchor={{ lat: 23.708981, lng: 90.436921 }}>
+                                        <InfoWindow position={{ lat: user.lat, lng: user.lng }} anchor={{ lat: user.lat, lng: user.lng }}>
                                             <div style={{ backgroundImage: 'url("/user_loc.png")', height: 50, width: 50, backgroundSize: '100%', textAlign: 'center' }}>
                                                 <img src={user.photoURL} style={{ width: 28, borderRadius: 25, background: 'transparent' }} alt="" />
                                             </div>
@@ -113,18 +125,19 @@ function PharmacySearch(props) {
 
                                         <Circle
                                             // required
-                                            center={{ lat: 23.708981, lng: 90.436921 }}
+                                            center={{ lat: user.lat, lng: user.lng }}
                                             // required
                                             options={options}
                                         />
                                     </Marker>
 
-                                    {locations.map(({ id, user_name, first_name, contact_number, street, last_name, lat, lng }) => {
+                                    {locations.map(({ id, user_name, first_name, contact_number,photoURL, street, last_name, lat, lng }) => {
                                         // console.log(id, user_name, parseFloat(lat), parseFloat(lng));
                                         return (
                                             <Marker
                                                 key={id}
                                                 position={{ lat: parseFloat(lat), lng: parseFloat(lng) }}
+                                                // position={{ lat: 23.710121, lng: 90.434302 }}
                                                 onClick={() => handleActiveMarker(id)}
                                                 icon={"/pi_40.png"}
                                                 title={user_name}
@@ -135,7 +148,7 @@ function PharmacySearch(props) {
                                                         <div>
                                                             <div className="product-box">
                                                                 <div className="product-img text-center">
-                                                                    <img style={{ width: '40px' }} src="/marker_pharmacy.jpg" className="img-fluid" alt="" />
+                                                                    <img style={{ width: '40px' }} src={photoURL} className="img-fluid" alt="" />
                                                                 </div>
                                                                 <div className="product-details">
                                                                     <h6>{user_name}</h6>
@@ -145,7 +158,7 @@ function PharmacySearch(props) {
                                                                     <div className="product-price">
                                                                         {/* Visit : ${parseInt(Math.random() * 100)}.00 */}
                                                                     </div>
-                                                                    <button type="button" onClick={() => props.setSeletedPharmacy({ id, user_name, street, contact_number })} className="btn btn-info mt-4">select</button>
+                                                                    <button type="button" onClick={() => get_location({ id, user_name, street, contact_number })} className="btn btn-info mt-4">select</button>
                                                                 </div>
                                                             </div>
                                                         </div>

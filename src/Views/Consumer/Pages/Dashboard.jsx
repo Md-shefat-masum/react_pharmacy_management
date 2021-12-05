@@ -1,10 +1,18 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useState, useEffect } from 'react'
 import { UseCommonData } from '../../../Hooks/UseCommonData'
 import DashCalender from '../Components/Calender/DashCalender'
 
-
 export default function Dashboard() {
     const { dash_calender_date } = UseCommonData();
+    const [appoinments, setAppoinments] = useState({})
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API_LINK}/appoinment/user-appoinments`)
+            .then(res => {
+                setAppoinments(res.data);
+            })
+    }, [])
+
     return (
         <section>
             <div className="row">
@@ -126,27 +134,17 @@ export default function Dashboard() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td> Doctor karim siddique </td>
-                                            <td className="digits">{new Date().toDateString()}</td>
-                                            <td className="font-secondary">Pending</td>
-                                        </tr>
-                                        <tr>
-                                            <td> Doctor karim siddique </td>
-                                            <td className="digits">{new Date().toDateString()}</td>
-                                            <td className="font-secondary">Pending</td>
-                                        </tr>
-                                        <tr>
-                                            <td> Doctor karim siddique </td>
-                                            <td className="digits">{new Date().toDateString()}</td>
-                                            <td className="font-secondary">Pending</td>
-                                        </tr>
-                                        <tr>
-                                            <td> Doctor karim siddique </td>
-                                            <td className="digits">{new Date().toDateString()}</td>
-                                            <td className="font-secondary">Pending</td>
-                                        </tr>
-                                        
+                                        {
+                                            appoinments?.data?.map(item => {
+                                                return (
+                                                    <tr key={item.id}>
+                                                        <td> {item?.doctor?.user_name} </td>
+                                                        <td className="digits">{new Date(item.date).toDateString()}</td>
+                                                        <td className="font-secondary">{item.appoinment_status}</td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
                                     </tbody>
                                 </table>
                             </div>

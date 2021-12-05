@@ -1,5 +1,6 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { UseAuth } from '../../../Hooks/UseAuth'
 import { UseCommonData } from '../../../Hooks/UseCommonData'
 import MedicineListForOrderModal from '../../Dispensary/Pages/Inventory/Components/MedicineListForOrderModal'
@@ -10,9 +11,13 @@ import PharmacySearch from '../Components/Map/PharmacySearch'
 
 function CreateOrder() {
     const { user } = UseAuth();
+    const fileInput = useRef();
     const { control_modal, setModalContent } = UseCommonData();
     const [selectedMedicine, setSelectedMedicine] = useState([]);
-    const [total, setTotal] = useState(0)
+    const [total, setTotal] = useState(0);
+    const [prescription, setPrescription] = useState({ need: false, uploaded: false, files: [] });
+    const formData = new FormData();
+    let navigate = useNavigate();
 
     const [BillingFormShow, setBillingFormShow] = useState('select_pharmacy')
     const [ShowPaymentModal, setShowPaymentModal] = useState(false)
@@ -47,10 +52,17 @@ function CreateOrder() {
 
     useEffect(() => {
         countTotal();
+        check_need_prescriptin();
     }, [selectedMedicine])
 
+    const check_need_prescriptin = () => {
+        selectedMedicine.find(i => i.need_prescription) ?
+            setPrescription({ need: true, uploaded: false }) :
+            setPrescription({ need: false, uploaded: false });
+    }
+
     const countTotal = () => {
-        let total = window.format_number(selectedMedicine.reduce((t, i) => t += (+i.unit_price * i.qty), 0));
+        let total = (selectedMedicine.reduce((t, i) => t += (+i.sales_price * i.qty), 0));
         setTotal(total);
     }
 
@@ -71,19 +83,39 @@ function CreateOrder() {
     }
 
     const submitOrder = () => {
-        console.log('get', seletedPharmacy, billingAddress, shippingAddress, paymentInfo, ShippingForm);
+        // console.log('get', seletedPharmacy, billingAddress, shippingAddress, paymentInfo, ShippingForm);
+        // console.log(fileInput.current.files);
+
         let data = {
-            seletedPharmacy,
-            billingAddress,
-            shippingAddress,
-            paymentInfo,
-            ShippingForm
+            seletedPharmacy: JSON.stringify(seletedPharmacy),
+            billingAddress: JSON.stringify(billingAddress),
+            shippingAddress: JSON.stringify(shippingAddress),
+            paymentInfo: JSON.stringify(paymentInfo),
+            ShippingForm: JSON.stringify(ShippingForm),
+            prescription: JSON.stringify(prescription),
+            selectedMedicine: JSON.stringify(selectedMedicine),
+            total,
         };
-        axios.post(`${process.env.REACT_APP_API_LINK}/order/create`, data)
+        for (const key in data) {
+            if (Object.hasOwnProperty.call(data, key)) {
+                const element = data[key];
+                formData.append(key, element);
+            }
+        }
+
+        formData.append("files_count", fileInput.current?.files?.length);
+        for (var x = 0; x < fileInput.current?.files?.length; x++) {
+            formData.append("files"+x, fileInput.current.files[x]);
+        }
+
+        axios.post(`${process.env.REACT_APP_API_LINK}/order/create`, formData)
             .then(res => {
                 console.log(res.data);
                 alert('order successfull');
-                setShowPaymentModal(!ShowPaymentModal)
+                setPaymentInfo({});
+                setSelectedMedicine([]);
+                setShowPaymentModal(!ShowPaymentModal);
+                navigate(`/consumer/invoice/${res.data.id}`);
             })
             .catch(err => {
                 console.log(err.response.data);
@@ -92,7 +124,16 @@ function CreateOrder() {
             })
     }
 
-
+    const setUploadPrescription = (e) => {
+        // console.log(fileInput.current.files);
+        let file_list = e.target.files;
+        if (file_list.length > 0) {
+            setPrescription({ need: true, uploaded: true, files: file_list });
+        } else {
+            setPrescription({ need: true, uploaded: false });
+        }
+    }
+    
     return (
         <div>
             <div className="card">
@@ -118,7 +159,36 @@ function CreateOrder() {
                                         <tbody>
                                             {
                                                 selectedMedicine?.map((item, index) => {
-                                                    return <tr key={item.id}>
+                                                    return !item.need_prescription && <tr key={item.id}>
+                                                        <td>
+                                                            <img src={item.full_photo_url} style={{ width: 40 }} alt={item.name} />
+                                                        </td>
+                                                        <td>{item.name}</td>
+                                                        <td style={{ width: 80 }}>
+                                                            <input type="text"
+                                                                value={item.qty}
+                                                                onChange={(e) => setQty(item, e)}
+                                                                className="form-control" />
+                                                        </td>
+                                                        <td style={{ width: 120 }}>$ {item.unit_price}</td>
+                                                        <td style={{ width: 120 }} className="text-end">$ {window.format_number(+item.unit_price * item.qty)}</td>
+                                                        <td>
+                                                            <i onClick={() => remove(index)} className="fa btn btn-outline-info fa-trash"></i>
+                                                        </td>
+                                                    </tr>
+                                                })
+                                            }
+                                            {
+                                                selectedMedicine.find(i => i.need_prescription) &&
+                                                <tr>
+                                                    <td colSpan="6">
+                                                        <h6>Need Prescription</h6>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            {
+                                                selectedMedicine?.map((item, index) => {
+                                                    return item.need_prescription > 0 && <tr key={item.id}>
                                                         <td>
                                                             <img src={item.full_photo_url} style={{ width: 40 }} alt={item.name} />
                                                         </td>
@@ -164,19 +234,40 @@ function CreateOrder() {
                                             <tr>
                                                 <th style={{ width: 200 }}>Total</th>
                                                 <td style={{ width: 3 }}>:</td>
-                                                <th> $ {total} </th>
+                                                <th> $ {window.format_number(total)} </th>
                                             </tr>
+                                            {
+                                                (prescription.need) &&
+                                                <tr>
+                                                    <th style={{ width: 200 }}>Upload Prescription</th>
+                                                    <td style={{ width: 3 }}>:</td>
+                                                    <th>
+                                                        <input type="file" ref={fileInput} multiple onChange={(e) => setUploadPrescription(e)} className="form-control" />
+                                                    </th>
+                                                </tr>
+                                            }
                                         </tbody>
                                         <tfoot>
                                             <tr>
                                                 <td colSpan="3">
                                                     <div className="text-center w-100 pt-3">
-                                                        <button className="btn btn-info"
-                                                            data-bs-toggle="modal"
-                                                            onClick={() => setShowPaymentModal(!ShowPaymentModal)}
-                                                            data-bs-target="#staticBackdrop">
-                                                            Proceed Order
-                                                        </button>
+                                                        {
+                                                            (prescription?.need && !prescription.uploaded) &&
+                                                            <span>upload prescription to proceed order.</span>
+                                                        }
+                                                        {
+
+                                                            (
+                                                                (selectedMedicine?.length > 0 && (prescription?.need && prescription.uploaded)) ||
+                                                                (selectedMedicine?.length > 0 && (!prescription?.need && !prescription.uploaded))
+                                                            ) &&
+                                                            <button className="btn btn-info"
+                                                                data-bs-toggle="modal"
+                                                                onClick={() => setShowPaymentModal(!ShowPaymentModal)}
+                                                                data-bs-target="#staticBackdrop">
+                                                                Proceed Order
+                                                            </button>
+                                                        }
                                                     </div>
                                                 </td>
                                             </tr>

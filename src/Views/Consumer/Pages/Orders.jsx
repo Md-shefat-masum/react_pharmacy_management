@@ -1,6 +1,21 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState, useEffect } from 'react'
+import { Pagination } from 'react-laravel-paginex'
+import { Link } from 'react-router-dom'
 
 function Orders() {
+    const [orders, setOrders] = useState({})
+    useEffect(() => {
+        LoadData({ page: 1 });
+    }, [])
+
+    const LoadData = (data) => {
+        axios.get(`${process.env.REACT_APP_API_LINK}/order/customer-orders?page=${data.page}`)
+            .then(res => {
+                setOrders(res.data);
+            })
+    }
+
     return (
         <div>
             <div className="card">
@@ -20,26 +35,36 @@ function Orders() {
                         </thead>
                         <tbody>
                             {
-                                [..."asdfgh".split('')].map(item => {
-                                    return <tr key={item}>
-                                        <td> #GG-{parseInt(Math.random()*10000)} </td>
-                                        <td className="digits">{new Date().toDateString()}</td>
-                                        <td className="font-secondary">Pending</td>
-                                        <td className="font-info">$ 1500</td>
-                                        <td style={{ width: 350 }}>
-                                            <div className="d-flex flex-wrap">
-                                                <a href="#/" className="btn m-2 btn-air-secondary">Details</a>
-                                                <a href="#/" className="btn m-2 btn-air-success">Edit</a>
-                                                <a href="#/" className="btn m-2 btn-air-danger">Delete</a>
+                                orders?.data?.map(item => {
+                                    return <tr key={item.id}>
+                                        <td>
+                                            #GG-{item.order_no}
+                                        </td>
+                                        <td className="digits">
+                                            {item.formatted_date}
+                                        </td>
+                                        <td className="font-secondary">
+                                            {item.order_status}
+                                        </td>
+                                        <td className="font-info">
+                                            $ {item.order_total}
+                                        </td>
+                                        <td style={{ width: 200 }}>
+                                            <div className="d-flex flex-wrap justify-content-end">
+                                                <Link to={`/consumer/invoice/${item.id}`} className="btn m-2 btn-air-secondary">Details</Link>
                                             </div>
                                         </td>
                                     </tr>
                                 })
                             }
-
-
                         </tbody>
                     </table>
+                </div>
+                <div className="card-footer">
+                    {
+                        orders?.data?.length > 0 &&
+                        <Pagination changePage={LoadData} numbersCountForShow={6} data={orders} />
+                    }
                 </div>
             </div>
         </div>

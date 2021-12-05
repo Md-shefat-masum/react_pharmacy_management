@@ -1,0 +1,66 @@
+#invoice_body .invoice {
+  padding: 30px;
+}
+#invoice_body .invoice h2 {
+  margin-top: 0px;
+  line-height: 0.8em;
+}
+#invoice_body .invoice .small {
+  font-weight: 300;
+}
+#invoice_body .invoice hr {
+  margin-top: 10px;
+  border-color: #ddd;
+}
+#invoice_body .invoice .table tr.line {
+  border-bottom: 1px solid #ccc;
+}
+#invoice_body .invoice .table td {
+  border: none;
+}
+#invoice_body .invoice .identity {
+  margin-top: 10px;
+  font-size: 1.1em;
+  font-weight: 300;
+}
+#invoice_body .invoice .identity strong {
+  font-weight: 600;
+}
+#invoice_body .grid {
+  position: relative;
+  width: 100%;
+  background: #fff;
+  color: #666666;
+  border-radius: 2px;
+  margin-bottom: 25px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+}
+@media print {
+  #invoice_body {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
+    z-index: 99;
+    /* Track */
+    /* Handle */
+    /* Handle on hover */
+  }
+  #invoice_body .grid {
+    box-shadow: none;
+  }
+  #invoice_body::-webkit-scrollbar {
+    width: 0px;
+  }
+  #invoice_body::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  #invoice_body::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  #invoice_body::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+  }
+}

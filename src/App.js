@@ -8,7 +8,7 @@ import AdminHome from "./Views/Admin/Pages/AdminHome";
 import {
     ConsumerOrders, ConsumerProfile,
     ConsumerDashboard, ConsumerLayout, ConsumerCreateOrder,
-    ConsumerUploadPrescirption, ConsumerHealthSearching, ConsumerCreateAppoinment, ConsumerAppoinments, ConsumerPaymentRequest, ConsumerGivePayment
+    ConsumerUploadPrescirption, ConsumerHealthSearching, ConsumerCreateAppoinment, ConsumerAppoinments, ConsumerPaymentRequest, ConsumerGivePayment, ConsumerOrderInvoice
 } from "./Views/Consumer/Pages/ConsumerPages";
 
 import {
@@ -93,6 +93,7 @@ function App() {
                         <Route path="appoinments" element={<ConsumerAppoinments />} />
                         <Route path="payment-requests" element={<ConsumerPaymentRequest />} />
                         <Route path="payment" element={<ConsumerGivePayment />} />
+                        <Route path="invoice/:id" element={<ConsumerOrderInvoice />} />
                     </Route>
 
                     {/* Dispensary routes */}

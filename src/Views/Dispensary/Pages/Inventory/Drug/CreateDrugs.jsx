@@ -233,6 +233,20 @@ function CreateDrugs() {
                                         </div>
                                     </div>
                                     <div className="mb-3 row">
+                                        <label htmlFor="" className="col-sm-3 col-form-label">Sales Price :</label>
+                                        <div className="col-sm-9">
+                                            <input type="text" name="sales_price" className="form-control" placeholder="Sales Price" />
+                                            <FormError field_name="sales_price"></FormError>
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 row">
+                                        <label htmlFor="" className="col-sm-3 col-form-label">Sales Tax :</label>
+                                        <div className="col-sm-9">
+                                            <input type="text" name="sales_tax" className="form-control" placeholder="Sales Tax" />
+                                            <FormError field_name="sales_tax"></FormError>
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 row">
                                         <label htmlFor="" className="col-sm-3 col-form-label">Manufacturing date :</label>
                                         <div className="col-sm-9">
                                             <input type="date" name="manufacturing_date" className="form-control" placeholder="Manufacturing date" />
