@@ -182,7 +182,7 @@ function HealthSearching() {
                                                 position={{ lat: parseFloat(lat), lng: parseFloat(lng) }}
                                                 // position={{ lat: 23.710121, lng: 90.434302 }}
                                                 onClick={() => handleActiveMarker(id)}
-                                                icon={"/pi_40.png"}
+                                                icon={"/docicon.png"}
                                                 title={user_name}
 
                                             >
