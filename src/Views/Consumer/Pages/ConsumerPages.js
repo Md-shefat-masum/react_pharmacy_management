@@ -7,6 +7,7 @@ export { default as ConsumerCreateOrder } from './CreateOrder';
 export { default as ConsumerUploadPrescirption } from './UploadPrescirption';
 export { default as ConsumerHealthSearching } from './HealthSearching';
 export { default as ConsumerAppoinments } from './Appoinments';
+export { default as ConsumerAppoinmentDetails } from './AppoinmentDetails';
 export { default as ConsumerCreateAppoinment } from './CreateAppoinment';
 export { default as ConsumerPaymentRequest } from './PaymentRequest';
 export { default as ConsumerGivePayment } from './GivePayment';

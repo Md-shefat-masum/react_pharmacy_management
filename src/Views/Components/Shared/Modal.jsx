@@ -14,7 +14,7 @@ function Modal() {
                 tabIndex="-1" aria-labelledby="staticBackdropLabel"
                 style={{ display: triggerModal?.trigger && 'block', backdropFilter: 'blur(3px)' }}
                 aria-hidden="true">
-                <div className={`modal-dialog modal-${triggerModal?.size} modal-dialog-centered`}>
+                <div className={`modal-dialog modal-${triggerModal?.size} modal-dialog-centered modal-dialog-scrollable`}>
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="staticBackdropLabel">{triggerModal?.header_text}</h5>

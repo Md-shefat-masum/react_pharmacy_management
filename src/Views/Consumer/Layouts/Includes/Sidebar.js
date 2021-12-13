@@ -16,8 +16,12 @@ function Sidebar() {
                         <span>Dasboard</span>
                     </Link>
                     <Link to="/consumer/orders" className="sidebar-header">
-                        <i className="icon-gift"></i>
+                        <i className="icon-harddrive"></i>
                         <span>Orders</span>
+                    </Link>
+                    <Link to="/consumer/appoinments" className="sidebar-header">
+                        <i className="icon-harddrives"></i>
+                        <span>Appoinments</span>
                     </Link>
                     <Link to="/consumer/payment-requests" className="sidebar-header">
                         <i className="icon-money"></i>

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 
 function OrderInvoice() {
     let { id } = useParams();
@@ -14,10 +15,14 @@ function OrderInvoice() {
     }, [])
     return (
         <div className="mb-4">
-            <a className="btn bg-white btn-primary mb-3 mx-1px text-95" onClick={() => window.print()} href="#" data-title="Print">
+            <a className="btn bg-white btn-primary mb-3 text-95 m-1" onClick={() => window.print()} href="#" data-title="Print">
                 <i className="fa fa-print text-primary-m1 me-2 text-120 w-2"></i>
                 Print
             </a>
+            {
+                order.payment_status === 0 &&
+                <Link to={`/consumer/payment/${id}`} className="btn btn-primary m-1 mb-3">Complete Payment</Link>
+            }
             <div id="invoice_body">
                 <div className="card h-100 m-0 shadow-0">
                     <div className="card-body p-0 m-0 border-0">
@@ -133,7 +138,7 @@ function OrderInvoice() {
             </div>
 
             <div className="row">
-                <div className="col-6">
+                <div className="col-md-8">
                     <div className="card mt-4">
                         <div className="card-body">
                             <h6>Payment Info</h6>
@@ -141,7 +146,7 @@ function OrderInvoice() {
                                 <tbody>
                                     <tr className="tr">
                                         <th>Payment Amount</th>
-                                        <th style={{width:3}}>:</th>
+                                        <th style={{ width: 3 }}>:</th>
                                         <th>$ {order?.payment_details?.payment_amount}</th>
                                     </tr>
                                     {/* <tr className="tr">
@@ -151,17 +156,17 @@ function OrderInvoice() {
                                     </tr> */}
                                     <tr className="tr">
                                         <th>Transaction Id</th>
-                                        <th style={{width:3}}>:</th>
+                                        <th style={{ width: 3 }}>:</th>
                                         <th>{order?.payment_details?.transaction_id}</th>
                                     </tr>
                                     <tr className="tr">
                                         <th>Order Images</th>
-                                        <th style={{width:3}}>:</th>
+                                        <th style={{ width: 3 }}>:</th>
                                         <th>
                                             {
-                                                order?.order_image?.map(item=>{
+                                                order?.order_image?.map(item => {
                                                     return (
-                                                        <a href={item.image_full_url} target="_black">
+                                                        <a href={item.image_full_url} key={item.image_full_url} target="_black">
                                                             <img src={item.image_full_url} className="img-thumbnail img-fluid my-3" />
                                                         </a>
                                                     )

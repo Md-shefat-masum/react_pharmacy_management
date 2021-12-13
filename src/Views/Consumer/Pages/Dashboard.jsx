@@ -30,7 +30,7 @@ export default function Dashboard() {
                                     <i className="icon-money"></i>
                                 </div>
                                 <div>
-                                    <span className="m-0">Earnings</span>
+                                    <span className="m-0">Purchased</span>
                                     <h4 className="counter">6659</h4>
                                     <i className="icofont icofont-chart-histogram-alt icon-bg"></i>
                                 </div>
@@ -46,7 +46,7 @@ export default function Dashboard() {
                                     <i className="icon-package"></i>
                                 </div>
                                 <div>
-                                    <span className="m-0">Products</span>
+                                    <span className="m-0">Appoinments</span>
                                     <h4 className="counter">9856</h4>
                                     <i className="icon-package icon-bg"></i>
                                 </div>
@@ -65,22 +65,6 @@ export default function Dashboard() {
                                     <span className="m-0">Messages</span>
                                     <h4 className="counter">893</h4>
                                     <i className="icon-comments icon-bg"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-sm-6 col-xl-3 col-lg-6">
-                    <div className="card o-hidden">
-                        <div className="bg-danger b-r-4 card-body">
-                            <div className="d-flex static-top-widget">
-                                <div className="align-self-center text-center">
-                                    <i className="icon-user"></i>
-                                </div>
-                                <div>
-                                    <span className="m-0">New User</span>
-                                    <h4 className="counter">45631</h4>
-                                    <i className="icon-user icon-bg"></i>
                                 </div>
                             </div>
                         </div>

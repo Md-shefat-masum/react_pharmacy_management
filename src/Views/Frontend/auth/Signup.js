@@ -56,7 +56,7 @@ export default function Signup() {
                     {/* <h6 className="text-center">Enter your Username and Password For Login</h6> */}
                     <div className="text-center">
                         <button onClick={() => setActive('consumer')} className={"m-1 btn btn-outline-secondary " + (Active === 'consumer' ? 'active' : '')}>Consumer</button>
-                        <button onClick={() => setActive('pharmacy')} className={"m-1 btn btn-outline-primary " + (Active === 'pharmacy' ? 'active' : '')}>Pharmacy</button>
+                        <button onClick={() => setActive('pharmacy')} className={"m-1 btn btn-outline-primary " + (Active === 'pharmacy' ? 'active' : '')}>Dispensary</button>
                         <button onClick={() => setActive('physician')} className={"m-1 btn btn-outline-success " + (Active === 'physician' ? 'active' : '')}>Physician</button>
                         <button onClick={() => setActive('deliveryman')} className={"m-1 btn btn-outline-info " + (Active === 'deliveryman' ? 'active' : '')}>Deliveryman</button>
                     </div>

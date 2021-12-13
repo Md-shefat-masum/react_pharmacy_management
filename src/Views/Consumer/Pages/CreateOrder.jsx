@@ -111,11 +111,15 @@ function CreateOrder() {
         axios.post(`${process.env.REACT_APP_API_LINK}/order/create`, formData)
             .then(res => {
                 console.log(res.data);
-                alert('order successfull');
                 setPaymentInfo({});
                 setSelectedMedicine([]);
                 setShowPaymentModal(!ShowPaymentModal);
-                navigate(`/consumer/invoice/${res.data.id}`);
+                if(res.data.payment_status == 1){
+                    navigate(`/consumer/invoice/${res.data.id}`);
+                }else{
+                    alert('payment failed. try again');
+                    navigate(`/consumer/payment/${res.data.id}`);
+                }
             })
             .catch(err => {
                 console.log(err.response.data);

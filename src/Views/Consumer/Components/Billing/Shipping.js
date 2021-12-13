@@ -66,7 +66,7 @@ function Shipping(props) {
                 </div>
                 <div className="mb-3 row">
                     <label htmlFor="" className="col-sm-3 col-form-label">Street</label>
-                    <div className="col-sm-9"><input onChange={(e)=>handle_change(e.target)}  value={props.shippingAddress?.street} name="street" type="text" className="form-control" id="" placeholder="street" /></div>
+                    <div className="col-sm-9"><input onChange={(e)=>handle_change(e.target)}  value={props.shippingAddress?.billing_street} name="street" type="text" className="form-control" id="" placeholder="street" /></div>
                 </div>
                 <div className="mb-3 row">
                     <label htmlFor="" className="col-sm-3 col-form-label">Description</label>
