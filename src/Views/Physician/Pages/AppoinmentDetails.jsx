@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function AppoinmentDetails() {
     let { id } = useParams();
     const [appoinment, setAppoinment] = useState({})
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_LINK}/appoinment/get-user-appoinment/${id}`)
+        axios.get(`${process.env.REACT_APP_API_LINK}/appoinment/get-doctor-appoinment/${id}`)
             .then(res => {
                 console.log(res.data);
                 setAppoinment(res.data)
@@ -21,38 +21,22 @@ function AppoinmentDetails() {
             <div className="card-body">
                 <div className="row mb-2">
                     <div className="col-auto">
-                        <img className="img-70 rounded-circle" alt="" src={appoinment?.doctor?.photoURL} />
+                        <img className="img-70 rounded-circle" alt="" src={appoinment?.consumer?.photoURL} />
                     </div>
                     <div className="col">
-                        <h3 className="mb-1 ">{appoinment?.doctor?.displayName}</h3>
+                        <h3 className="mb-1 ">{appoinment?.consumer?.displayName}</h3>
+                        
                         <p className="my-2 ">
-                            {
-                                appoinment?.doctor?.designation?.map(i => <span className="badge badge-info m-1" key={i.id}>{i.title}</span>)
-                            }
+                            <b>Email: </b>{appoinment?.consumer?.email}
                         </p>
                         <p className="my-2 ">
-                            <b>Email: </b>{appoinment?.doctor?.email}
-                        </p>
-                        <p className="my-2 ">
-                            <b>Contact: </b>{appoinment?.doctor?.contact_number}
+                            <b>Contact: </b>{appoinment?.consumer?.contact_number}
                         </p>
                     </div>
+                    <div className="col-12 my-3">
+                        <Link to={"/physician/place-schedule/"+id} className="btn btn-sm btn-success">Place schedule</Link>
+                    </div>
                 </div>
-
-                <h6>Contact with assistance</h6>
-                <table className="table table-bordered table-striped mt-4">
-                    <tbody>
-                        {
-                            appoinment?.doctor?.doctor_assistance?.map(item => {
-                                return <tr key={item.id}>
-                                    <td style={{ width: 200, }}> {item.name} </td>
-                                    <td style={{ width: 3, }}>:</td>
-                                    <td>{item.mobile_number}, &nbsp; {item.telephone_number}</td>
-                                </tr>
-                            })
-                        }
-                    </tbody>
-                </table>
                 
                 <h6 className="mt-4">Appoinment info</h6>
                 <table className="table table-bordered table-striped mt-2">

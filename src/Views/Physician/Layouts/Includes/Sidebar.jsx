@@ -15,9 +15,13 @@ function Sidebar() {
                         <i className="icon-notepad"></i> 
                         <span>Dasboard</span>
                     </Link>
-                    <Link to="/physician/create-prescription" className="sidebar-header">
+                    {/* <Link to="/physician/create-prescription" className="sidebar-header">
                         <i className="icon-shield"></i> 
                         <span>Create Prescription</span>
+                    </Link> */}
+                    <Link to="/physician/appoinments" className="sidebar-header">
+                        <i className="icon-shield"></i> 
+                        <span>Appoinments</span>
                     </Link>
                     <Link to="/physician/profile" className="sidebar-header">
                         <i className="icon-user"></i> 

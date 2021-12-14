@@ -59,6 +59,9 @@ import {
     PhysicianPrescriptions,
     PhysicianProfile,
     PhysicianStartCounciling,
+    PhysicianAppoinments,
+    PhysicianAppoinmentDetails,
+    PhysicianPlaceSchedule,
 } from "./Views/Physician/Pages/PhysicianPages";
 
 function App() {
@@ -153,6 +156,9 @@ function App() {
                         <Route path="prescriptions" element={<PhysicianPrescriptions />} />
                         <Route path="profile" element={<PhysicianProfile />} />
                         <Route path="councilling" element={<PhysicianStartCounciling />} />
+                        <Route path="appoinments" element={<PhysicianAppoinments />} />
+                        <Route path="appoinment-details/:id" element={<PhysicianAppoinmentDetails />} />
+                        <Route path="place-schedule/:id" element={<PhysicianPlaceSchedule />} />
                     </Route>
 
                 </Routes>

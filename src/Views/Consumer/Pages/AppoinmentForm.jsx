@@ -1,11 +1,13 @@
 import axios from 'axios';
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import { UseCommonData } from '../../../Hooks/UseCommonData';
 import FormError from '../../Components/Shared/FormError'
 
 function AppoinmentForm({ doctor }) {
     console.log(doctor);
     const { control_modal } = UseCommonData();
+    let navigate = useNavigate();
 
     const submit_form = (e) => {
         e.preventDefault();
@@ -21,6 +23,7 @@ function AppoinmentForm({ doctor }) {
                     size: 'xl',
                 };
                 control_modal(control_value);
+                navigate(`/consumer/appoinment/${res.data.id}`);
             })
             .catch(error=>{
                 let message = error?.response?.data?.err_message;
@@ -46,13 +49,13 @@ function AppoinmentForm({ doctor }) {
                             <FormError field_name="date"></FormError>
                         </div>
                     </div>
-                    <div className="mb-3 row">
+                    {/* <div className="mb-3 row">
                         <label htmlFor="" className="col-sm-3 col-form-label">Time</label>
                         <div className="col-sm-9">
                             <input type="time" name="start_time" className="form-control" placeholder="start_time" />
                             <FormError field_name="start_time"></FormError>
                         </div>
-                    </div>
+                    </div> */}
                     <h5>Payment Info</h5>
                     <div className="mb-3 row">
                         <label htmlFor="" className="col-sm-3 col-form-label">Card number</label>

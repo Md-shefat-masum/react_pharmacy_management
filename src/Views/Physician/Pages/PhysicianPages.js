@@ -4,3 +4,6 @@ export { default as PhysicianCreatePrescription } from './CreatePrescription';
 export { default as PhysicianPrescriptions } from './Prescriptions';
 export { default as PhysicianProfile } from './Profile';
 export { default as PhysicianStartCounciling } from './StartCounciling';
+export { default as PhysicianAppoinments } from './Appoinments';
+export { default as PhysicianAppoinmentDetails } from './AppoinmentDetails';
+export { default as PhysicianPlaceSchedule } from './PlaceSchedule';

@@ -1,4 +1,3 @@
-
 #invoice_body {
 
     .invoice {
@@ -81,5 +80,69 @@
         &::-webkit-scrollbar-thumb:hover {
             background: transparent;
         }
+    }
+}
+
+.schedule_body {
+    display: flex;
+
+    .left {
+        border: 1px solid #52782547;
+        width: 140px;
+
+        h6 {
+            text-align: center;
+            margin: 0;
+            font-weight: 500;
+            padding: 10px 0px;
+        }
+
+        .schedule_patient_body {
+            padding-top: 23px;
+            .single_patient {
+                border-bottom: 1px solid rgba(128, 128, 128, 0.185);
+                padding: 5px 10px;
+            }
+        }
+    }
+
+    .right {
+        border: 1px solid #52782547;
+        flex: 1;
+        h6 {
+            text-align: center;
+            margin: 0;
+            font-weight: 500;
+            padding: 10px 0px;
+        }
+        .time_slot_body {
+            display: flex;
+            position: relative;
+
+            .slot {
+                border: 1px solid #52782547;
+                flex: 1;
+                text-align: center;
+            }
+            
+        }
+
+        .time_slot_block{
+            width: 100%;
+            height: 30px;
+            border: 1px solid #52782547;
+            // margin: 5px 0px;
+            margin-bottom: 2.5px;
+            position: relative;
+            .time_slot_marker{
+                position: absolute;
+                height: 100%;
+                background-color: #527825b3;
+                left: 10%;
+                top: 0;
+                width: 20%;
+            }
+        }
+
     }
 }
