@@ -66,12 +66,12 @@ function AppoinmentDetails() {
                         <tr>
                             <td>Start Time</td>
                             <td>:</td>
-                            <td>{appoinment.start_time}</td>
+                            <td>{appoinment.formatted_start_time}</td>
                         </tr>
                         <tr>
                             <td>End Time</td>
                             <td>:</td>
-                            <td>{appoinment.end_time}</td>
+                            <td>{appoinment.formatted_end_time}</td>
                         </tr>
                         <tr>
                             <td>Transaction id</td>

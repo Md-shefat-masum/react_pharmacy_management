@@ -5,7 +5,7 @@ import { UseCommonData } from '../../../Hooks/UseCommonData';
 import FormError from '../../Components/Shared/FormError'
 
 function AppoinmentForm({ doctor }) {
-    console.log(doctor);
+    // console.log(doctor);
     const { control_modal } = UseCommonData();
     let navigate = useNavigate();
 

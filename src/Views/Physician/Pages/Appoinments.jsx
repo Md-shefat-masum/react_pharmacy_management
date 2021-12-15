@@ -12,6 +12,7 @@ function Appoinments() {
     const LoadData = (data) => {
         axios.get(`${process.env.REACT_APP_API_LINK}/appoinment/doctor-appoinments?page=${data.page}`)
             .then(res => {
+                // console.log(res.data);
                 setAppoinment(res.data);
             })
     }
@@ -25,7 +26,7 @@ function Appoinments() {
                 <table className="table table-hover text-center">
                     <thead>
                         <tr>
-                            <th scope="col">Doctor</th>
+                            <th scope="col">Patient</th>
                             <th scope="col">Date</th>
                             <th scope="col">Start Time</th>
                             <th scope="col">End Time</th>
@@ -38,16 +39,16 @@ function Appoinments() {
                             appoinments?.data?.map(item => {
                                 return <tr key={item.id}>
                                     <td>
-                                        {item?.doctor?.user_name}
+                                        {item?.consumer?.displayName}
                                     </td>
                                     <td className="digits">
-                                        {item.date}
+                                        {item.formatted_date}
                                     </td>
                                     <td className="digits">
-                                        {item.start_time}
+                                        {item.start_time ? item.formatted_start_time: '-'}
                                     </td>
                                     <td className="digits">
-                                        {item.end_time}
+                                        {item.end_time ? item.formatted_end_time: '-'}
                                     </td>
                                     <td>
                                         {item.appoinment_status ==='approved' ? <span className="badge badge-success bg-success">approved</span> : <span className="badge badge-danger bg-danger">pending</span>}

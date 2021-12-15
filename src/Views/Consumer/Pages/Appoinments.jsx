@@ -39,16 +39,16 @@ function Appoinments() {
                             appoinments?.data?.map(item => {
                                 return <tr key={item.id}>
                                     <td>
-                                        {item?.doctor?.user_name}
+                                        {item?.doctor?.displayName}
                                     </td>
                                     <td className="digits">
-                                        {item.date}
+                                        {item.formatted_date}
                                     </td>
                                     <td className="digits">
-                                        {item.start_time}
+                                        {item.start_time ? item.formatted_start_time: '-'}
                                     </td>
                                     <td className="digits">
-                                        {item.end_time}
+                                        {item.end_time ? item.formatted_end_time: '-'}
                                     </td>
                                     <td>
                                         {item.appoinment_status ==='approved' ? <span className="badge badge-success bg-success">approved</span> : <span className="badge badge-danger bg-danger">pending</span>}

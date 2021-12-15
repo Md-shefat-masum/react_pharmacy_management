@@ -145,15 +145,15 @@ function HealthSearching() {
                         <div className="row">
                             <div className="col-md-6">
                                 <h6>Doctor's List</h6>
-                                <div class="customer-review vertical-scroll" style={{ height: '60vh', width: '100%', overflowY:'scroll' }}>
+                                <div className="customer-review vertical-scroll" style={{ height: '60vh', width: '100%', overflowY:'scroll' }}>
                                     {
                                         locations?.map(loc => {
                                             const { id, user_name, doctor_info, contact_number, street } = loc;
-                                            return <div class="d-flex mt-4" key={loc.id}>
-                                                <img class="align-self-start rounded-circle img-90" alt="Universal-review" src={loc.photoURL} />
+                                            return <div className="d-flex mt-4" key={loc.id}>
+                                                <img className="align-self-start rounded-circle img-90" alt="Universal-review" src={loc.photoURL} />
                                                 <div>
-                                                    <label class="cust-name">{loc.displayName}</label>
-                                                    <label class="cust-des d-block">
+                                                    <label className="cust-name">{loc.displayName}</label>
+                                                    <label className="cust-des d-block">
                                                         {loc.designation?.map(d => <span key={d.id} className="m-1 badge badge-primary">{d.title}</span>)}
                                                     </label>
                                                     <p className="mb-1"> <b>Fee: </b> ${loc?.doctor_info?.doctor_charge} </p>

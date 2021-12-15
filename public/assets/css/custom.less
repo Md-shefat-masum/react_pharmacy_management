@@ -83,66 +83,127 @@
     }
 }
 
+.custom_scroll {
+
+    /* width */
+    &::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: #f1f1f173;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: #37630352;
+        border-radius: 25px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgb(58 101 6);
+    }
+}
+
 .schedule_body {
     display: flex;
+    overflow-x: scroll;
+    .custom_scroll;
 
     .left {
         border: 1px solid #52782547;
-        width: 140px;
+        width: 160px;
 
         h6 {
             text-align: center;
             margin: 0;
             font-weight: 500;
-            padding: 10px 0px;
+            padding: 10px 0px 11px;
         }
 
         .schedule_patient_body {
-            padding-top: 23px;
+            padding-top: 50px;
+
             .single_patient {
                 border-bottom: 1px solid rgba(128, 128, 128, 0.185);
                 padding: 5px 10px;
+                height: 54.4px;
+
+                &:first-child {
+                    border-top: 1px solid rgba(128, 128, 128, 0.185);
+                }
+
+                &:last-child {
+                    border-bottom: 0;
+                }
             }
         }
     }
 
     .right {
         border: 1px solid #52782547;
+        border-left: 0;
         flex: 1;
+        min-width: 400px;
+
         h6 {
             text-align: center;
             margin: 0;
             font-weight: 500;
             padding: 10px 0px;
         }
+
         .time_slot_body {
             display: flex;
             position: relative;
+            border-bottom: 1px solid #52782547;
 
             .slot {
-                border: 1px solid #52782547;
                 flex: 1;
                 text-align: center;
+                border-top: 1px solid #52782547;
+                border-right: 1px solid #52782547;
+                line-height: 23px;
+
+                &:last-child {
+                    border-right: 0;
+                }
             }
-            
+
         }
 
-        .time_slot_block{
+        .time_slot_block {
             width: 100%;
-            height: 30px;
-            border: 1px solid #52782547;
+            height: 54px;
+            border-bottom: 1px solid #52782547;
             // margin: 5px 0px;
-            margin-bottom: 2.5px;
+            // margin-bottom: 2.5px;
             position: relative;
-            .time_slot_marker{
+
+            .time_slot_marker {
                 position: absolute;
                 height: 100%;
                 background-color: #527825b3;
                 left: 10%;
                 top: 0;
                 width: 20%;
+                cursor: pointer;
+            }
+
+            &:last-child {
+                border-bottom: 0;
             }
         }
 
     }
 }
+
+.height_300{
+    height: 300px;
+}
+
+
+

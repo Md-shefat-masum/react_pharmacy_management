@@ -64,29 +64,77 @@
     background: transparent;
   }
 }
+.custom_scroll {
+  /* width */
+  /* Track */
+  /* Handle */
+  /* Handle on hover */
+}
+.custom_scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.custom_scroll::-webkit-scrollbar-track {
+  background: #f1f1f173;
+}
+.custom_scroll::-webkit-scrollbar-thumb {
+  background: #37630352;
+  border-radius: 25px;
+}
+.custom_scroll::-webkit-scrollbar-thumb:hover {
+  background: #3a6506;
+}
 .schedule_body {
   display: flex;
+  overflow-x: scroll;
+  /* width */
+  /* Track */
+  /* Handle */
+  /* Handle on hover */
+}
+.schedule_body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.schedule_body::-webkit-scrollbar-track {
+  background: #f1f1f173;
+}
+.schedule_body::-webkit-scrollbar-thumb {
+  background: #37630352;
+  border-radius: 25px;
+}
+.schedule_body::-webkit-scrollbar-thumb:hover {
+  background: #3a6506;
 }
 .schedule_body .left {
   border: 1px solid #52782547;
-  width: 140px;
+  width: 160px;
 }
 .schedule_body .left h6 {
   text-align: center;
   margin: 0;
   font-weight: 500;
-  padding: 10px 0px;
+  padding: 10px 0px 11px;
 }
 .schedule_body .left .schedule_patient_body {
-  padding-top: 23px;
+  padding-top: 50px;
 }
 .schedule_body .left .schedule_patient_body .single_patient {
   border-bottom: 1px solid rgba(128, 128, 128, 0.185);
   padding: 5px 10px;
+  height: 54.4px;
+}
+.schedule_body .left .schedule_patient_body .single_patient:first-child {
+  border-top: 1px solid rgba(128, 128, 128, 0.185);
+}
+.schedule_body .left .schedule_patient_body .single_patient:last-child {
+  border-bottom: 0;
 }
 .schedule_body .right {
   border: 1px solid #52782547;
+  border-left: 0;
   flex: 1;
+  min-width: 400px;
 }
 .schedule_body .right h6 {
   text-align: center;
@@ -97,17 +145,22 @@
 .schedule_body .right .time_slot_body {
   display: flex;
   position: relative;
+  border-bottom: 1px solid #52782547;
 }
 .schedule_body .right .time_slot_body .slot {
-  border: 1px solid #52782547;
   flex: 1;
   text-align: center;
+  border-top: 1px solid #52782547;
+  border-right: 1px solid #52782547;
+  line-height: 23px;
+}
+.schedule_body .right .time_slot_body .slot:last-child {
+  border-right: 0;
 }
 .schedule_body .right .time_slot_block {
   width: 100%;
-  height: 30px;
-  border: 1px solid #52782547;
-  margin-bottom: 2.5px;
+  height: 54px;
+  border-bottom: 1px solid #52782547;
   position: relative;
 }
 .schedule_body .right .time_slot_block .time_slot_marker {
@@ -117,4 +170,11 @@
   left: 10%;
   top: 0;
   width: 20%;
+  cursor: pointer;
+}
+.schedule_body .right .time_slot_block:last-child {
+  border-bottom: 0;
+}
+.height_300 {
+  height: 300px;
 }

@@ -34,7 +34,8 @@ function AppoinmentDetails() {
                         </p>
                     </div>
                     <div className="col-12 my-3">
-                        <Link to={"/physician/place-schedule/"+id} className="btn btn-sm btn-success">Place schedule</Link>
+                        <Link to={"/physician/place-schedule/"+id} className="btn btn-sm btn-success m-1">Place schedule</Link>
+                        <Link to={"/physician/create-prescription/"+id} className="btn btn-sm btn-secondary m-1">Create Prescription</Link>
                     </div>
                 </div>
                 
@@ -50,12 +51,12 @@ function AppoinmentDetails() {
                         <tr>
                             <td>Start Time</td>
                             <td>:</td>
-                            <td>{appoinment.start_time}</td>
+                            <td>{appoinment.formatted_start_time}</td>
                         </tr>
                         <tr>
                             <td>End Time</td>
                             <td>:</td>
-                            <td>{appoinment.end_time}</td>
+                            <td>{appoinment.formatted_end_time}</td>
                         </tr>
                         <tr>
                             <td>Transaction id</td>
@@ -81,11 +82,11 @@ function AppoinmentDetails() {
                             <td>
                                 <span className="badge badge-primary">
                                     {
-                                        (appoinment?.appoinment_status !== 'pending' &&
+                                        (appoinment?.appoinment_status === 'approved' &&
                                             appoinment?.appoinment_link?.length > 0)
                                             ?
 
-                                            <a href={appoinment.appoinment_link} className="btn btn-warning">Click here and start meeting</a>
+                                            <a href={appoinment.appoinment_link} target="_blank" className="btn btn-warning">Click here and start meeting</a>
 
                                             :
                                             'not generated yet'

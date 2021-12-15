@@ -152,7 +152,7 @@ function App() {
                     {/* Physician routes */}
                     <Route path="/physician" element={<PrivateRoute><PhysicianLayout /></PrivateRoute>}>
                         <Route index element={<PhysicianDashboard />} />
-                        <Route path="create-prescription" element={<PhysicianCreatePrescription />} />
+                        <Route path="create-prescription/:id" element={<PhysicianCreatePrescription />} />
                         <Route path="prescriptions" element={<PhysicianPrescriptions />} />
                         <Route path="profile" element={<PhysicianProfile />} />
                         <Route path="councilling" element={<PhysicianStartCounciling />} />
