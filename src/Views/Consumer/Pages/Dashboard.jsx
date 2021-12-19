@@ -46,8 +46,8 @@ export default function Dashboard() {
                                     <i className="icon-package"></i>
                                 </div>
                                 <div>
-                                    <span className="m-0">Appoinments</span>
-                                    <h4 className="counter">9856</h4>
+                                    <span className="m-0">Heart Rate</span>
+                                    <h4 className="counter">12bpm</h4>
                                     <i className="icon-package icon-bg"></i>
                                 </div>
                             </div>
@@ -62,8 +62,8 @@ export default function Dashboard() {
                                     <i className="icon-comments"></i>
                                 </div>
                                 <div>
-                                    <span className="m-0">Messages</span>
-                                    <h4 className="counter">893</h4>
+                                    <span className="m-0">Body Temperature</span>
+                                    <h4 className="counter">18 C</h4>
                                     <i className="icon-comments icon-bg"></i>
                                 </div>
                             </div>

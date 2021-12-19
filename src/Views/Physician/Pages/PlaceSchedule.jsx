@@ -69,11 +69,11 @@ function PlaceSchedule() {
         appoinments.map(i => {
             return (
                 (i.start_time && i.end_time) ?
-                patient_slot_html.push(<div key={Math.random()} className="single_patient">
-                    {i?.consumer?.displayName} <br />
-                    {(i.start_time && i.end_time) && i?.time_range}
-                </div>)
-                : 0
+                    patient_slot_html.push(<div key={Math.random()} className="single_patient">
+                        {i?.consumer?.displayName} <br />
+                        {(i.start_time && i.end_time) && i?.time_range}
+                    </div>)
+                    : 0
             );
         });
         return patient_slot_html;
@@ -82,22 +82,25 @@ function PlaceSchedule() {
     const make_slot_markers = () => {
         let patient_slot_marker_html = [];
         appoinments?.map(i => {
-            let slot_info = document.getElementById('slot_' + i.time_slot.replace(' ', '_').replace(':', '_'));
-            if (slot_info) {
-                let left = slot_info.offsetLeft;
-                let width = slot_info.clientWidth;
-                let marker_width = width * i.total_time / 60;
-                let rest_minute = width * (+ i.start_time.split(':')[1]) / 60;
-                let total_time = i.total_time;
+            if (i.start_time && i.end_time) {
+                let slot_info = document.getElementById('slot_' + i.time_slot.replace(' ', '_').replace(':', '_'));
+                if (slot_info) {
+                    let left = slot_info.offsetLeft;
+                    let width = slot_info.clientWidth;
+                    let marker_width = width * i.total_time / 60;
+                    let rest_minute = width * (+ i.start_time?.split(':')[1]) / 60;
+                    let total_time = i.total_time;
 
-                // console.log({ marker_width, width, time: i.total_time, range: i?.time_range, rest_minute, start_time: i.start_time });
+                    // console.log({ marker_width, width, time: i.total_time, range: i?.time_range, rest_minute, start_time: i.start_time });
 
-                return patient_slot_marker_html.push(
-                    <div className="time_slot_block" key={Math.random()}>
-                        <div title={i?.time_range} className="time_slot_marker" style={{ left: left + rest_minute, width: marker_width }}></div>
-                    </div>
-                )
+                    return patient_slot_marker_html.push(
+                        <div className="time_slot_block" key={Math.random()}>
+                            <div title={i?.time_range} className="time_slot_marker" style={{ left: left + rest_minute, width: marker_width }}></div>
+                        </div>
+                    )
+                }
             }
+            return 0;
         });
         setSlotMarkers(patient_slot_marker_html);
     }
@@ -114,6 +117,7 @@ function PlaceSchedule() {
             .then(res => {
                 console.log(res.data);
                 getAppoinment();
+                window.show_alert('shedule updated.', 'text-light', 4000);
             })
             .catch((error) => {
                 let message = error?.response?.data?.err_message;

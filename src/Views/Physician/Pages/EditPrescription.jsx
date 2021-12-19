@@ -5,8 +5,9 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import FormError from '../../Components/Shared/FormError';
 
-function CreatePrescription() {
+function EditPrescription() {
     let { id } = useParams();
+    let { prescription } = useParams();
     const [consumer, setConsumer] = useState({});
     const [doctor, setDoctor] = useState({});
     const [appoinment, setAppoinment] = useState({});
@@ -14,10 +15,6 @@ function CreatePrescription() {
     const [prescribeMedicine, setPrescribeMedicine] = useState([]);
     const [invetigations, setInvetigations] = useState([]);
     const [description, setDescription] = useState('');
-
-    useEffect(() => {
-        // console.log(description);
-    }, [description]);
 
     useEffect(() => {
         console.log(id);
@@ -30,6 +27,15 @@ function CreatePrescription() {
                 setAppoinment(res.data)
                 setConsumer(res.data?.consumer);
                 setDoctor(res.data?.doctor);
+            })
+
+        axios.get(`${process.env.REACT_APP_API_LINK}/prescription/get-doctor-prescription/${prescription}`)
+            .then(res => {
+                console.log(res.data);
+                setDescription(res.data?.additional_message)
+                setPrescribeMedicine(res.data?.medicines)
+                setInvetigations(res.data?.investigations)
+                // setPrescription(res.data);
             })
     }, []);
 
@@ -106,12 +112,13 @@ function CreatePrescription() {
             invetigations,
             appoinment,
             description,
+            prescription_id: prescription,
         }
-        axios.post(`${process.env.REACT_APP_API_LINK}/prescription/store`, form_data)
+        axios.post(`${process.env.REACT_APP_API_LINK}/prescription/update`, form_data)
             .then(res => {
                 console.log(res.data);
-                window.show_alert('Prescription Created.', 'text-light', 4000);
-                reset_all(true);
+                window.show_alert('Prescription Updated.', 'text-light', 4000);
+                // reset_all(true);
             })
             .catch((error) => {
                 let message = error?.response?.data?.err_message;
@@ -123,7 +130,7 @@ function CreatePrescription() {
         <div className="container">
             <div className="card">
                 <div className="card-header">
-                    <h4>Create prescription for {consumer.displayName}</h4>
+                    <h4>Edit prescription for {consumer.displayName}</h4>
                 </div>
                 <div className="card-body">
                     <form onSubmit={(e) => { store_prescription(e) }}>
@@ -206,42 +213,87 @@ function CreatePrescription() {
                                                             </div>
                                                             <div className="form-check form-check-inline">
                                                                 <label className="form-check-label">
-                                                                    <input
-                                                                        value={item.evening}
-                                                                        onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'evening', e.target.checked)}
-                                                                        className="form-check-input" type="checkbox" /> Evening
+                                                                    {
+                                                                        item.evening ?
+                                                                            <input
+                                                                                value={item.evening} defaultChecked
+                                                                                onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'evening', e.target.checked)}
+                                                                                className="form-check-input" type="checkbox" />
+                                                                            :
+                                                                            <input
+                                                                                value={item.evening}
+                                                                                onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'evening', e.target.checked)}
+                                                                                className="form-check-input" type="checkbox" />
+                                                                    }
+                                                                    Evening
                                                                 </label>
                                                             </div>
                                                             <div className="form-check form-check-inline">
                                                                 <label className="form-check-label">
-                                                                    <input
-                                                                        value={item.night}
-                                                                        onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'night', e.target.checked)}
-                                                                        className="form-check-input" type="checkbox" /> Night
+                                                                    {
+                                                                        item.night ?
+                                                                            <input
+                                                                                value={item.night} defaultChecked="true"
+                                                                                onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'night', e.target.checked)}
+                                                                                className="form-check-input" type="checkbox" />
+                                                                            :
+                                                                            <input
+                                                                                value={item.night}
+                                                                                onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'night', e.target.checked)}
+                                                                                className="form-check-input" type="checkbox" />
+                                                                    }
+                                                                    Night
                                                                 </label>
                                                             </div>
                                                             <div className="form-check form-check-inline">
                                                                 <label className="form-check-label">
-                                                                    <input
-                                                                        value={item.before_eat}
-                                                                        onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'before_eat', e.target.checked)}
-                                                                        className="form-check-input" type="checkbox" /> Before eat
+                                                                    {
+                                                                        item.before_eat ?
+                                                                            <input
+                                                                                value={item.before_eat} defaultChecked="true"
+                                                                                onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'before_eat', e.target.checked)}
+                                                                                className="form-check-input" type="checkbox" />
+                                                                            :
+                                                                            <input
+                                                                                value={item.before_eat}
+                                                                                onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'before_eat', e.target.checked)}
+                                                                                className="form-check-input" type="checkbox" />
+                                                                    }
+                                                                    Before eat
                                                                 </label>
                                                             </div>
                                                             <div className="form-check form-check-inline">
                                                                 <label className="form-check-label">
-                                                                    <input
-                                                                        value={item.after_eat}
-                                                                        onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'after_eat', e.target.checked)}
-                                                                        className="form-check-input" type="checkbox" /> After eat
+                                                                    {
+                                                                        item.after_eat ?
+                                                                            <input
+                                                                                value={item.after_eat} defaultChecked="true"
+                                                                                onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'after_eat', e.target.checked)}
+                                                                                className="form-check-input" type="checkbox" />
+                                                                            :
+                                                                            <input
+                                                                                value={item.after_eat}
+                                                                                onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'after_eat', e.target.checked)}
+                                                                                className="form-check-input" type="checkbox" />
+                                                                    }
+                                                                    After eat
                                                                 </label>
                                                             </div>
                                                             <div className="form-check form-check-inline">
                                                                 <label className="form-check-label">
-                                                                    <input
-                                                                        value={item.empty_stomach}
-                                                                        onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'empty_stomach', e.target.checked)}
-                                                                        className="form-check-input" type="checkbox" /> Empty stomach
+                                                                    {
+                                                                        item.empty_stomach ?
+                                                                            <input
+                                                                                value={item.empty_stomach} defaultChecked="true"
+                                                                                onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'empty_stomach', e.target.checked)}
+                                                                                className="form-check-input" type="checkbox" />
+                                                                            :
+                                                                            <input
+                                                                                value={item.empty_stomach}
+                                                                                onChange={(e) => set_state_data(prescribeMedicine, setPrescribeMedicine, index, 'empty_stomach', e.target.checked)}
+                                                                                className="form-check-input" type="checkbox" />
+                                                                    }
+                                                                    Empty stomach
                                                                 </label>
                                                             </div>
                                                         </td>
@@ -331,7 +383,7 @@ function CreatePrescription() {
                                         <h5>Addional Message</h5>
                                         <CKEditor
                                             editor={ClassicEditor}
-                                            data="<p>type here</p>"
+                                            data={description}
                                             // onReady={editor => {
                                             //     // You can store the "editor" and use when it is needed.
                                             //     console.log('Editor is ready to use!', editor);
@@ -357,7 +409,7 @@ function CreatePrescription() {
                             <div className="col-md-12">
                                 <FormError field_name="prescribeMedicine"></FormError>
                                 <div className="submit-section">
-                                    <button type="submit" className="btn btn-primary submit-btn m-1">Save</button>
+                                    <button type="submit" className="btn btn-primary submit-btn m-1">Update</button>
                                     <button type="reset" onClick={() => { reset_all() }} className="btn btn-secondary submit-btn m-1">Clear</button>
                                 </div>
                             </div>
@@ -369,4 +421,4 @@ function CreatePrescription() {
     )
 }
 
-export default CreatePrescription
+export default EditPrescription

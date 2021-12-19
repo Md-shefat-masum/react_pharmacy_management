@@ -1,6 +1,22 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { Pagination } from 'react-laravel-paginex'
+import { Link } from 'react-router-dom';
 
 function Prescriptions() {
+    const [prescription, setPrescription] = useState({});
+    useEffect(() => {
+        LoadData({ page: 1 });
+    }, [])
+
+    const LoadData = (data) => {
+        axios.get(`${process.env.REACT_APP_API_LINK}/prescription/get-doctor-prescriptions?page=${data.page}`)
+            .then(res => {
+                console.log(res.data);
+                setPrescription(res.data);
+            })
+    }
+
     return (
         <div>
             <div className="card">
@@ -11,26 +27,24 @@ function Prescriptions() {
                     <table className="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Prescription id</th>
+                                <th scope="col" style={{ width: 150 }}>Date</th>
                                 <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Time</th>
                                 <th scope="col" className="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                [..."asdfgh".split('')].map(item => {
-                                    return <tr key={item}>
-                                        <td> #GG-{parseInt(Math.random()*10000)} </td>
-                                        <td> karmbox </td>
-                                        <td> karmbox@gmail.com</td>
-                                        <td className="digits">{new Date().toDateString()}</td>
-                                        <td className="font-info">10:23 am</td>
-                                        <td style={{ width: 100 }}>
-                                            <div className="d-flex flex-wrap">
-                                                <a href="#/" className="btn m-2 btn-air-secondary">Details</a>
+                                prescription?.data?.map(item => {
+                                    return <tr key={item.id}>
+                                        <td>
+                                            {new Date(item.created_at).toDateString()}
+                                            {new Date(item.created_at).toLocaleTimeString()}
+                                        </td>
+                                        <td> {item?.consumer?.user_name} </td>
+                                        <td style={{ width: 250 }}>
+                                            <div className="d-flex flex-wrap justify-content-end">
+                                                <Link to={`/physician/edit-prescription/${item.consumer_id}/${item.id}`} className="btn m-2 btn-air-secondary">Edit</Link>
+                                                <Link to={`/physician/prescription-details/${item.id}`} className="btn m-2 btn-air-secondary">Details</Link>
                                             </div>
                                         </td>
                                     </tr>
@@ -40,6 +54,12 @@ function Prescriptions() {
 
                         </tbody>
                     </table>
+                </div>
+                <div className="card-footer">
+                    {
+                        prescription?.data?.length > 0 &&
+                        <Pagination changePage={LoadData} numbersCountForShow={6} data={prescription} />
+                    }
                 </div>
             </div>
         </div>

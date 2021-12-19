@@ -32,6 +32,7 @@ const UseFirebase = () => {
 
     // redirect link
     let navigate = useNavigate();
+    window.navigate = useNavigate();
 
     const registerUser = (email, password) => {
         createUserWithEmailAndPassword(auth, email, password)
@@ -126,6 +127,7 @@ const UseFirebase = () => {
                     // console.log(res.data);
                     console.log('check auth');
                     setUser(res.data);
+                    window.user = res.data;
                 })
                 .catch(err=>{
                     if(err.response?.data?.message == 'Unauthenticated.'){
@@ -138,6 +140,7 @@ const UseFirebase = () => {
             setCheckedAuth(true);
             setUserLogedIn(false);
             setUser({});
+            window.user({});
         }
         // const unsubscribe = onAuthStateChanged(auth, (user) => {
         //     if (user) {
@@ -156,6 +159,7 @@ const UseFirebase = () => {
     }, [])
 
     useEffect(() => {
+        
         if (Object.keys(User).length > 0) {
             setCheckedAuth(true);
             setUserLogedIn(true);

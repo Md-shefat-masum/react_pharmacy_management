@@ -23,7 +23,7 @@ function OrderInvoice() {
                 order.payment_status === 0 &&
                 <Link to={`/consumer/payment/${id}`} className="btn btn-primary m-1 mb-3">Complete Payment</Link>
             }
-            <div id="invoice_body">
+            <div id="invoice_body" className="print_body">
                 <div className="card h-100 m-0 shadow-0">
                     <div className="card-body p-0 m-0 border-0">
                         <div className="row">

@@ -36,7 +36,7 @@
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
 }
 @media print {
-  #invoice_body {
+  .print_body {
     position: fixed;
     top: 0;
     left: 0;
@@ -48,19 +48,19 @@
     /* Handle */
     /* Handle on hover */
   }
-  #invoice_body .grid {
+  .print_body .grid {
     box-shadow: none;
   }
-  #invoice_body::-webkit-scrollbar {
+  .print_body::-webkit-scrollbar {
     width: 0px;
   }
-  #invoice_body::-webkit-scrollbar-track {
+  .print_body::-webkit-scrollbar-track {
     background: transparent;
   }
-  #invoice_body::-webkit-scrollbar-thumb {
+  .print_body::-webkit-scrollbar-thumb {
     background: transparent;
   }
-  #invoice_body::-webkit-scrollbar-thumb:hover {
+  .print_body::-webkit-scrollbar-thumb:hover {
     background: transparent;
   }
 }
