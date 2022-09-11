@@ -1,11 +1,25 @@
-# Getting Started with Cloud pharmacy management
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=Md-shefat-masum.laravel_pharmacy_management_api.readme)
+# Pharmacy management frontend
 
-## Available Scripts
+####  Installation
+First clone this repository, and install the dependencies.
 
-In the project directory, you can run:
+**run the commands**
 
-### `npm start`
+clone project
+```
+git clone https://github.com/Md-shefat-masum/react_pharmacy_management.git
+```
+or [Click here to download .zip](https://github.com/Md-shefat-masum/react_pharmacy_management/archive/refs/heads/main.zip)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+install dependencies
+```
+npm install
+```
+
+Finally time to launch project, run
+```
+npm start
+```
+
 
